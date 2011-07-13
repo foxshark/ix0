@@ -17,7 +17,7 @@
     
         <header>
         
-            <h2>Manifestiny</h2>
+            <h2>IPOfestr <em>beta</em></h2>
             <? if(isset($user_details) && !empty($user_details)){ ?>
             	<p class="logged_in_as"><span class="user_color user_<?=$user_details['id']?>"></span> <?=$username?> | resources available: <strong><?= $user_details['account'] ?></strong> | income: <strong><?=$user_details['tot_resource'] ?></strong> per hour | <a href="<?=base_url()?>home/logout/">log out</a></p>
             <? } ?>

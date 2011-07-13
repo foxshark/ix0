@@ -11,19 +11,20 @@ class Home extends Controller {
 	function index()
 	{
 		if($this->session->userdata('logged_in')) {
-			$this->my_char();
+			$this->my_dash();
 		} else {
 			$this->login();
 		}
 	}
 	
-	function my_char()
+	function my_dash()
 	{
-		$data['page_title'] = "Home";
-		$data['content']['main'] = 'character';
-		$data['user_details'] = $this->_users->getMyStats();
-		buildLayout($data, "mobile");
-	}
+		$data['page_title'] = "Dashboard";
+		$data['content']['main'] = 'dash';
+		//$data['user_details'] = $this->_users->getMyStats();
+		//buildLayout($data, "mobile");
+		buildLayout($data);
+		}
 	
 	function login()
 	{
