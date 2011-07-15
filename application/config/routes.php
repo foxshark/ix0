@@ -41,10 +41,8 @@
 */
 
 $route['default_controller']	= "home";
-$route['scaffolding_trigger']	= "scaff";
+$route['scaffolding_trigger']	= "lhfjkgeh";
 
-$route['square/(:any)']			= "square/index/$1";
-$route['attack']				= "square/attack_square";
-$route['build']					= "square/build";
+$route['project/(:num)']			= "project/editProject/$1";
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */
