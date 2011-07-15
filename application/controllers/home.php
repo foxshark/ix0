@@ -48,7 +48,11 @@ class Home extends Controller {
 			}
 	
 			$data['page_title'] = "Login";
-			$data['content']['main'] = 'login';
+			$data['content']['main'] = array('login','register');
+			/*
+			// uncomment to see hiring interface
+			$data['content']['main'] = 'hire';
+			*/
 			buildLayout($data);
 		}
 	}

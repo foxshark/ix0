@@ -11,7 +11,7 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://localhost/ipofest/";
+$config['base_url']	= "http://localhost/ix0/";
 
 /*
 |--------------------------------------------------------------------------
