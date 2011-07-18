@@ -6,6 +6,7 @@ class Project extends Controller {
 		parent::Controller();
 		//$this->load->library('form_validation');
 		//$this->load->model('user_model','_users');
+		$this->load->model('project_model','_project');
 	}
 	
 	function index()
@@ -13,6 +14,14 @@ class Project extends Controller {
 		if(!$this->session->userdata('logged_in')) {
 			redirect('');
 		}
+	}
+	
+	function overview()
+	{
+		$data['page_title']		= "Projects Overview";
+		$data['content']['main']	= 'project_overview';
+		$data['project_data']		= $this->_project->getUserOverview($this->session->userdata('id'));
+		buildLayout($data);
 	}
 	
 	function editProject($project_id)
