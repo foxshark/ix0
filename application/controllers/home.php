@@ -6,7 +6,7 @@ class Home extends Controller {
 		parent::Controller();
 		//$this->load->library('form_validation');
 		$this->load->model('user_model','_users');
-		$this->load->model('project_model','_project');
+		
 	}
 	
 	function index()
@@ -20,8 +20,12 @@ class Home extends Controller {
 	
 	function my_dash()
 	{
+		$this->load->model('project_model','_project');
+		$this->load->model('staff_model','_staff');
+	
 		$data['page_title'] = "Dashboard";
 		$data['content']['main'] = 'dash';
+		$data['staff_data']		= $this->_staff->getUserOverview($this->session->userdata('id'));
 		$data['project_data']		= $this->_project->getUserOverview($this->session->userdata('id'));
 		//$data['user_details'] = $this->_users->getMyStats();
 		//buildLayout($data, "mobile");
