@@ -1,10 +1,24 @@
-<div style="height:800px; width:800px; border:#333333 solid 3px;">
+<form class="form" method="post" action="">
 
-	<div style="padding:10px; margin:10px; border:#333333 solid 3px;">
-		<form>
-		<div>Name: <input type="textfield"></div>
-		<div>Description:<input type="textfield"></div>
-		</form>
-	</div>
+	<section>
+		
+		<div class="form-line">
+			<label>Name</label>
+			<div class="form-input">
+				<input type="text" name="name">
+			</div>
+		</div>
+		<div class="form-line">
+			<label>Description</label>
+			<div class="form-input">
+				<input type="text" name="description">
+			</div>
+		</div>
+			
+	</section>
+	
+	<section class="form-save">
+		<button class="button">Start Project</button>
+	</section>
 
-</div>
+</form>
