@@ -6,6 +6,7 @@ class Home extends Controller {
 		parent::Controller();
 		//$this->load->library('form_validation');
 		$this->load->model('user_model','_users');
+		$this->load->model('project_model','_project');
 	}
 	
 	function index()
@@ -21,6 +22,7 @@ class Home extends Controller {
 	{
 		$data['page_title'] = "Dashboard";
 		$data['content']['main'] = 'dash';
+		$data['project_data']		= $this->_project->getUserOverview($this->session->userdata('id'));
 		//$data['user_details'] = $this->_users->getMyStats();
 		//buildLayout($data, "mobile");
 		buildLayout($data);
