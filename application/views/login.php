@@ -21,7 +21,7 @@
 	</section>
     
     <section class="form-save">
-	    <button>Login</button>
+	    <button class="button">Login</button>
 	</section>
 
 </form>
