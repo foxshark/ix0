@@ -1,16 +1,41 @@
-<div style="height:800px; width:800px; border:#333333 solid 3px;">
+<div id="dashboard">
 
-	<div style="padding:10px; margin:10px; border:#333333 solid 3px;"> Graph goes here</div>
-
-	<div style="padding:10px; margin:10px; border:#333333 solid 3px;"> My Competitors </div>
-
-	<div style="padding:10px; margin:10px; border:#333333 solid 3px;">
-	<h3>My Projects</h3>
-	<a href="<?= base_url()?>project/0"> Add Project</a>
+	<section>
+		<p>[graph]</p>
+	</section>
+	
+	<!--<section>
+		<h3>My Competitors</h3>
+	</section>-->
+	
+	<div class="clearfix">
+	
+		<section class="staff">
+			<h3>My Staff</h3>
+			<ol class="dash-list">
+				<li class="clearfix">
+					<span class="name">Joe Blow</span> 
+					<a href="#" class="tag">Android <span class="level">2</span></a> 
+					<a href="#" class="tag">Social Media <span class="level">2</span></a> 
+					<span class="price">1%</span>
+				</li>
+				<li class="clearfix">
+					<span class="name">Joe Blow</span> 
+					<a href="#" class="tag">Android <span class="level">2</span></a> 
+					<a href="#" class="tag">Social Media <span class="level">2</span></a> 
+					<span class="price">1%</span>
+				</li>
+			</ol>
+			<p><a href="<?= base_url()?>staff/hire">Hire Staff</a></p>
+		</section>
+		
+		<section class="projects">
+			<h3>My Projects</h3>
+			<p><a href="<?= base_url()?>project/0">Add Project</a></p>
+		</section>
+	
 	</div>
-
-	<div style="padding:10px; margin:10px; border:#333333 solid 3px;"> My Staff </div>
-
-	<a href="<?=base_url()?>">Cash Out</a>
+	
+	<p><a href="<?=base_url()?>">Cash Out</a></p>
 
 </div>

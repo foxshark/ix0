@@ -36,7 +36,7 @@
 	
 	<section class="form-save">
 	
-		<button>Launch My Startup!</button>
+		<button class="button">Launch My Startup!</button>
 	
 	</section>
 	
