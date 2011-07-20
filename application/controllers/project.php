@@ -18,9 +18,11 @@ class Project extends Controller {
 	
 	function overview()
 	{
+		$this->load->model('staff_model','_staff');
 		$data['page_title']		= "Projects Overview";
 		$data['content']['main']	= 'project_overview';
 		$data['project_data']		= $this->_project->getUserOverview($this->session->userdata('id'));
+		$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'));
 		buildLayout($data);
 	}
 	

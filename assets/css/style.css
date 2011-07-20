@@ -334,7 +334,11 @@ label {
 	display: inline-block;
 	background: rgba(255,255,255,.2);
 }
-		
+	
+.tag.t0{
+	border-top: 1px solid #999999;
+	background: #777777;
+}	
 
 .button,
 .button:visited {  
