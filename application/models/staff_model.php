@@ -19,14 +19,19 @@ class Staff_model extends Model {
 		return $data;
 	}
 	
-	function getStaffTagsOnly($company_id=0)
+	function getStaffTagsOnly($company_id=0, $min_lvl=0)
 	{
 		$staff = $this->_getCompanyStaff($company_id);
+		if(!empty($staff)) {
 		// get staff
 		$this->db->select('staff_tag.*, tags.name AS tname, project_tag.lvl AS tlvl');
 		$this->db->join('project_tag', 'project_tag.tag_id = staff_tag.tag_id', 'left');
 		$this->db->join('tags', 'tags.id = staff_tag.tag_id', 'left');
 		$this->db->where_in('staff_id', array_keys($staff)); 
+		if($min_lvl > 0)
+		{
+			$this->db->where('project_tag.lvl >=', $min_lvl);
+		}
 		$this->db->order_by('project_tag.lvl', 'desc');
 		$this->db->order_by('tags.name', 'asc');
 		$query = $this->db->get($this->_staff_tag);
@@ -43,12 +48,16 @@ class Staff_model extends Model {
 		//pre_print_r($this->db->last_query());
 		//pre_print_r($tag); die;	
 		return $tag;
+		} else {
+			return array();
+		}
 	}
 	
 	function _getStaffAndSkill($company_id=0)
 	{
 		$staff = $this->_getCompanyStaff($company_id);
 		// get staff
+		if(!empty($staff)) {
 		$this->db->select('staff_tag.*, tags.name');
 		$this->db->join('tags', 'tags.id = staff_tag.tag_id', 'left');
 		$this->db->where_in('staff_id', array_keys($staff)); 
@@ -62,6 +71,9 @@ class Staff_model extends Model {
 		//pre_print_r($this->db->last_query());
 		//pre_print_r($staff); die;	
 		return $staff;
+		} else {
+			return array();
+		} 
 	}
 	
 	function _getCompanyStaff($company_id=0)

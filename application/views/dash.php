@@ -34,14 +34,18 @@
 		</section>
 		<section class="projects">
 			<h3><a href="<?= base_url()?>project/overview">My Projects</a></h3>
+
 		<ol class="dash-list">
 				
-		<? foreach($project_data as $p){?>
+		<? foreach($skill_data as $s){
+			if($s['lvl'] > 0){
+		?>
 		<li class="clearfix">
-<a href="#" class="tag"><?= $p['tag']?> <span class="level"><?= $p['lvl']?></span></a>
+<a href="#" class="tag"><?= $s['name']?> <span class="level"><?= $s['lvl']?></span></a> <?= $s['progress']?> / <?=$s['goal']?>
 		</li>
-		<?}?>
+		<?}}?>
 		</ol>
+
 			<!-- <p><a href="<?= base_url()?>project/0">Add Project</a></p> --!>
 		</section>
 	

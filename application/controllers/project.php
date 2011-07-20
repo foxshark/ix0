@@ -22,7 +22,7 @@ class Project extends Controller {
 		$data['page_title']		= "Projects Overview";
 		$data['content']['main']	= 'project_overview';
 		$data['project_data']		= $this->_project->getUserOverview($this->session->userdata('id'));
-		$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'));
+		$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'),1);
 		buildLayout($data);
 	}
 	
