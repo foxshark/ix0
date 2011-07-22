@@ -2,37 +2,60 @@
 
 class Project_model extends Model {
 
-	// create a sample object out patient info
-	function Project_model ()
+	function __construct()
 	{
-		parent::Model();
+		parent::__construct();
 		
 		// Tables being used:
-		$this->_users	= 'users';
-		$this->_grid_square	= 'grid_square';
+		$this->_table_project = 		"project";
+		$this->_table_project_tag =		"project_tag";
+		
+		$this->load->model('tag_model','_tag');
+		
 	}
 	
-	function getUserOverview($id=0)
+	function addProjectTag($project_id, $tag_id)
 	{
-		$data = array();
-		
-		$data[] = array("tag"=>"Android", "lvl"=>6, "progress"=>12, "goal"=>175);
-		$data[] = array("tag"=>"Facebook", "lvl"=>3, "progress"=>8, "goal"=>50);
-		$data[] = array("tag"=>"Photo Share", "lvl"=>3, "progress"=>0, "goal"=>0);
-		$data[] = array("tag"=>"Cloud", "lvl"=>2, "progress"=>3, "goal"=>25);
-		// hide real data, usefake data
-		/*
+		// insert new row for project tag in db
+				
+		//return $data;
+	}
+	
+	function getProjectOverview($id)
+	{
+		// get basic project info
+		$result = array();
 		$this->db->where('id', $id); 
-		$query = $this->db->get($this->_users);
-		
-		$user = array();
+		$query = $this->db->get($this->_table_project);
 		foreach ($query->result() as $row)
 		{
-			$user = get_object_vars($row);
-		}	
-		*/
+			$result = get_object_vars($row);
+		}
 		
-		return $data;
+		// get project tags
+		$this->db->select('tag_id AS id, lvl, turns_to_complete, completed');
+		$this->db->where('project_id', $result['id']);
+		$this->db->order_by('lvl', 'desc');
+		$query = $this->db->get($this->_table_project_tag);
+		foreach ($query->result() as $row)
+		{
+			$tags[$row->id] = $row->id;
+			$result['tags'][$row->id] = get_object_vars($row);
+		}
+		
+		// use tag model to get tag info
+		$tags = $this->_tag->getTags($tags);
+		
+		foreach($result['tags'] as $k => $v)
+		{
+			$result['tags'][$k] += $tags[$k];
+			
+			// hard code goal/progress
+			$result['tags'][$k]['goal'] = 10;
+			$result['tags'][$k]['progress'] = 3;
+		}
+		
+		return $result;
 	}
 	
 }

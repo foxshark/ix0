@@ -26,7 +26,7 @@ class Home extends Controller {
 		$data['page_title'] = "Dashboard";
 		$data['content']['main'] = 'dash';
 		$data['staff_data']		= $this->_staff->getUserOverview($this->session->userdata('id'));
-		$data['project_data']		= $this->_project->getUserOverview($this->session->userdata('id'));
+		$data['project_data']		= $this->_project->getProjectOverview($this->session->userdata('id'));
 		$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'),1);
 		//$data['user_details'] = $this->_users->getMyStats();
 		//buildLayout($data, "mobile");
