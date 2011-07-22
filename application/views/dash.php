@@ -25,7 +25,7 @@
 		<li class="clearfix">
 			<span class="name"><?= $s['name']?></span> 
 			<? foreach ($s['tag'] as $t){ ?>
-				<a href="#" class="tag"><?= $t['name'] ?><span class="level"><?= $t['skill_lvl']?></span></a> 
+				<a href="#" class="tag"><?= $t['name'] ?><span class="level"><?= $t['tag_lvl']?></span></a> 
 			<? } ?>
 		</li>
 		<?}?>
