@@ -22,12 +22,12 @@
 			
 			<? foreach($staff_data as $s){?>
 			<li class="clearfix">
-				<span class="name"><?= $s['name']?></span> 
-				<? foreach ($s['tag'] as $t){ ?>
-					<a href="#" class="tag"><?= $t['name'] ?><span class="level"><?= $t['skill_lvl']?></span></a> 
-				<? } ?>
-			</li>
-			<? } ?>
+                <span class="name"><?= $s['name']?></span> 
+                <? foreach ($s['tag'] as $t){ ?>
+                    <a href="#" class="tag"><?= $t['name'] ?><span class="level"><?= $t['tag_lvl']?></span></a> 
+                <? } ?>
+            </li>
+            <? } ?>
 			</ol>
 			
 			<p><a href="<?= base_url()?>staff/hire">Hire Staff</a></p>
@@ -45,7 +45,7 @@
 				<li class="clearfix">
 					<a href="#" class="tag"><?= $s['name']?> <span class="level"><?= $s['lvl']?></span></a> <?= $s['progress']?> / <?=$s['goal']?>
 				</li>
-			<?}}?>
+			<? }}?>
 			</ol>
 
 			<!--<p><a href="<?= base_url()?>project/0">Add Project</a></p>-->

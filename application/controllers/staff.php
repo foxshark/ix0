@@ -10,7 +10,8 @@ class Staff extends Controller {
 		}
 		
 		$this->load->model('staff_model','_staff');
-		
+		//$this->load->library('form_validation');
+		//$this->load->model('user_model','_users');
 	}
 	
 	function index()
@@ -18,20 +19,26 @@ class Staff extends Controller {
 		redirect('staff/overview');
 	}
 	
+	function hire()
+	{
+		$data['page_title']			= "Hire New Staff Members";
+		$data['content']['main']	= 'staff_add';
+		$data['staff_data']			= $this->_staff->getFreeStaff();
+		buildLayout($data);
+	}
+	
+	function finalizeHire($id = 0)
+	{
+		$this->_staff->hireStaff($id);
+		redirect('staff');	
+	}
+	
 	function overview()
 	{
 		$data['page_title']		= "Staff Overview";
 		$data['content']['main']	= 'staff_overview';
-		$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'),1);
+		$data['staff_data']		= $this->_staff->getUserOverview($this->session->userdata('id'));
 		buildLayout($data);
 	}
-	
-	function hire()
-	{
-		//$data['page_title']		= $project_id?"Edit Project":"Add Project";
-		$data['content']['main']	= 'staff_add';
-		//$data['project_data']		= $this->_fgrid->getAllSquares();
-		buildLayout($data);
-	}
-	
+
 }

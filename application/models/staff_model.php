@@ -89,4 +89,18 @@ class Staff_model extends Model {
 		return $staff;
 	}
 	
+	function getFreeStaff()
+	{
+		return $this->_getStaffAndSkill(0);
+	}
+	
+	function hireStaff($id)
+	{
+		$data = array(	"company"	=>$this->session->userdata('id'),
+						"hire_date"	=>date("Y-m-d H:i:s"));
+		$this->db->where('id', $id);
+		$this->db->where('company', 0); // hard code in that it must be an un employed person
+		$this->db->update($this->_staff, $data); 
+	}
+	
 }
