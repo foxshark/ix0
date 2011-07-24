@@ -1,9 +1,14 @@
 <?php
 class Staff extends Controller {
 
-	function Staff()
+	function __construct()
 	{
-		parent::Controller();
+		parent::__construct();
+		
+		if(!$this->session->userdata('logged_in')) {
+			redirect('/home');
+		}
+		
 		$this->load->model('staff_model','_staff');
 		//$this->load->library('form_validation');
 		//$this->load->model('user_model','_users');
@@ -11,9 +16,7 @@ class Staff extends Controller {
 	
 	function index()
 	{
-		if(!$this->session->userdata('logged_in')) {
-			//redirect to base
-		}
+		redirect('staff/overview');
 	}
 	
 	function hire()
@@ -37,4 +40,5 @@ class Staff extends Controller {
 		$data['staff_data']		= $this->_staff->getUserOverview($this->session->userdata('id'));
 		buildLayout($data);
 	}
+
 }

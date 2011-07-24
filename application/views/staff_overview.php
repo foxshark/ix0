@@ -16,4 +16,3 @@
 			<p><a href="<?= base_url()?>staff/hire">Hire Staff</a></p>
 	</div>
 </div>
-<? pre_print_r($staff_data); ?>

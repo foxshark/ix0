@@ -7,6 +7,7 @@ class Project extends Controller {
 		//$this->load->library('form_validation');
 		//$this->load->model('user_model','_users');
 		$this->load->model('project_model','_project');
+		$this->load->model('staff_model','_staff');
 	}
 	
 	function index()
@@ -17,12 +18,22 @@ class Project extends Controller {
 	}
 	
 	function overview()
-	{
-		$this->load->model('staff_model','_staff');
-		$data['page_title']		= "Projects Overview";
+	{	
+		
+
+		// hard code project id for now
+		$project_id 				= 1;
+		$project_data 				= $this->_project->getProjectOverview($project_id);
+		$tag_data 					= $this->_staff->getStaffTagsOnly($this->session->userdata('id'));
+		
+		//$data['project_data']		= $this->_project->getProjectOverview($this->session->userdata('id'));
+		
+		
+		// assemble our $data for the view
+		$data['page_title']			= "Projects Overview";
 		$data['content']['main']	= 'project_overview';
-		$data['project_data']		= $this->_project->getUserOverview($this->session->userdata('id'));
-		$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'));
+		$data['p'] = $project_data;
+		$data['t'] = $tag_data; 
 		buildLayout($data);
 	}
 	
@@ -56,5 +67,15 @@ class Project extends Controller {
 			//$data['content']['main'] = 'hire';
 			
 			buildLayout($data);
+	}
+	
+	function addTag($project_id, $tag_id)
+	{
+		// is this your project?
+		// is this skill already in progress?
+			// if yes to both, add skill to project (last priority)
+			$this->_project->addProjectTag($project_id, $tag_id);
+		// else or after adding, redirect
+		redirect('project/overview');
 	}
 }
