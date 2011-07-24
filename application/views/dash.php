@@ -1,4 +1,6 @@
 <div id="dashboard">
+<h1><?=$valuation_snapshot['valuation']?></h1>
+<h2 <?= $valuation_snapshot['valuation_change'] >=0 ? "" : "red"?>><?= $valuation_snapshot['valuation_change'] >=0 ? "+" : "-"?> <?=$valuation_snapshot['valuation_change']?></h2>
 
 	<section>
 		<p>[graph]</p>
@@ -25,7 +27,7 @@
 		<li class="clearfix">
 			<span class="name"><?= $s['name']?></span> 
 			<? foreach ($s['tag'] as $t){ ?>
-				<a href="#" class="tag"><?= $t['name'] ?><span class="level"><?= $t['skill_lvl']?></span></a> 
+				<a href="#" class="tag"><?= $t['name'] ?><span class="level"><?= $t['tag_lvl']?></span></a> 
 			<? } ?>
 		</li>
 		<?}?>

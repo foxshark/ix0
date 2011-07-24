@@ -7,7 +7,8 @@
 		<li class="clearfix">
 			<span class="name"><?= $s['name']?></span> 
 			<? foreach ($s['tag'] as $t){ ?>
-				<a href="#" class="tag"><?= $t['name'] ?><span class="level"><?= $t['skill_lvl']?></span></a> 
+				<a href="#" class="tag"><?= $t['name'] ?> (<?=$t['tag_points']?> / 10) <span class="level"><?= $t['tag_lvl']?></span></a> 
+
 			<? } ?>
 		</li>
 		<?}?>
@@ -15,3 +16,4 @@
 			<p><a href="<?= base_url()?>staff/hire">Hire Staff</a></p>
 	</div>
 </div>
+<? pre_print_r($staff_data); ?>
