@@ -23,6 +23,9 @@ class Home extends Controller {
 	{
 		$this->load->model('project_model','_project');
 		$this->load->model('staff_model','_staff');
+		
+		// hard code the company id for now
+		$company_id = 1;
 	
 		$data['valuation_snapshot']			= $this->_value->getCompanyTotal();
 
@@ -30,7 +33,10 @@ class Home extends Controller {
 		$data['content']['main'] = 'dash';
 		$data['staff_data']		= $this->_staff->getUserOverview($this->session->userdata('id'));
 		//$data['project_data']		= $this->_project->getProjectOverview($this->session->userdata('id'));
-		$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'),1);
+		
+		//$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'),1);
+		// replace the above function with getAllProjects, which will contain skill_data for each project
+		$data['projects'] = $this->_project->getAllProjects($company_id);
 
 		//$data['user_details'] = $this->_users->getMyStats();
 		//buildLayout($data, "mobile");
