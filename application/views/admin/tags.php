@@ -1,4 +1,4 @@
-<? //pre_print_r($valuation_snapshot) ?>
+<? pre_print_r($tags) ?>
 
 <ol class="ilist hire">
 <? foreach($staff_data as $s) { ?>

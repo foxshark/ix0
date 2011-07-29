@@ -15,10 +15,12 @@ class Tag_model extends Model {
 		
 	}
 	
-	function getTags($array)
+	function getTags($array=array())
 	{
 		$result = array();
-		$this->db->where_in('id', $array); 
+		if(!empty($array)){
+			$this->db->where_in('id', $array); 
+		}
 		$query = $this->db->get($this->_table_tag);
 		foreach ($query->result() as $row)
 		{
