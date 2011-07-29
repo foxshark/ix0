@@ -17,14 +17,15 @@ class Project extends Controller {
 		}
 	}
 	
-	function overview()
+	function overview($id)
 	{	
 		
-
-		// hard code project id for now
-		$project_id 				= 1;
-		$project_data 				= $this->_project->getProjectOverview($project_id);
+		$project_id 				= $id;
+		$project_data 				= $this->_project->getProjectFull($project_id);
 		$tag_data 					= $this->_staff->getStaffTagsOnly($this->session->userdata('id'));
+		
+		//pre_print_r($project_data);
+		//die();
 		
 		//$data['project_data']		= $this->_project->getProjectOverview($this->session->userdata('id'));
 		

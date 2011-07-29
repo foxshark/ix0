@@ -91,7 +91,40 @@ class Staff_model extends Model {
 	
 	function getFreeStaff()
 	{
+		// see if there are fewer than 10 free staff
+		$staff = count($this->_getCompanyStaff(0));
+
+		//generate new if so
+		if($staff <10)
+		{
+			$this->_generateHires(10-$staff);
+		} 
+		
+		//find people
 		return $this->_getStaffAndSkill(0);
+	}
+	
+	function _generateHires($num)
+	{
+		for($x=0; $x<$num; $x++)
+		{
+			$s = array("name"	=> $this->_getName(),
+				"company"	=> 0,
+				"worth"		=> 100);
+			$this->db->insert($this->_staff, $s);
+			
+			$t = array("staff_id"	=> $this->db->insert_id(),
+				"tag_id"	=> rand(1,20),
+				"tag_lvl"	=> rand(1, 6));
+			$this->db->insert($this->_staff_tag, $t);
+		}
+	}
+	
+	function _getName()
+	{
+		$raw_names = "Jacob Isabella Ethan Sophia Michael Emma Jayden Olivia William Ava Alexander Emily Noah Abigail Daniel Madison Aiden Chloe Anthony Mia";
+		$names = explode(" ", $raw_names);
+		return $names[rand(0, count($names))]; 
 	}
 	
 	function hireStaff($id)

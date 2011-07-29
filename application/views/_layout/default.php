@@ -43,15 +43,11 @@
 	
 	<div id="main" role="main">
 	
-		<div id="main">
-            
-			<? 
-			$load = $content['main'];		
-            if(!is_array($load)){ $load = array($load); } // turn single entries into an array		
-            foreach($load as $v){ $this->load->view($v); }
-            ?>
-                        
-        </div><!-- end #main -->
+		<? 
+		$load = $content['main'];		
+        if(!is_array($load)){ $load = array($load); } // turn single entries into an array		
+        foreach($load as $v){ $this->load->view($v); }
+        ?>
 	
 	</div>
 	
