@@ -1,0 +1,10 @@
+INSERT INTO `ip0_r4zf3st`.`project` (
+`id` ,
+`company_id` ,
+`name` ,
+`updated` ,
+`created`
+)
+VALUES (
+NULL , '1', 'My First Pyramid', '2011-07-25 20:56:17', '2011-07-25 20:56:20'
+);

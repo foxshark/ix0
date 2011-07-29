@@ -1,5 +1,5 @@
 <?
-function buildLayout($data = false, $layout_template = "default")
+function buildLayout($data = false, $layout_template = "mobile")
 	{
 		// start $data if not already set
 		if(!isset($data)){ $data = array();	}
