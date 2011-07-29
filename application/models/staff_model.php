@@ -6,7 +6,7 @@ class Staff_model extends Model {
 	function Staff_model ()
 	{
 		parent::Model();
-		
+		$this->load->model('valuation_model','_value');		
 		// Tables being used:
 		$this->_staff		= 'staff';
 		$this->_staff_tag	= 'staff_tag';
@@ -106,16 +106,19 @@ class Staff_model extends Model {
 	
 	function _generateHires($num)
 	{
+
 		for($x=0; $x<$num; $x++)
 		{
+			$tag_id		= rand(1,20);
+			$tag_lvl	= rand(1, 6);
 			$s = array("name"	=> $this->_getName(),
 				"company"	=> 0,
-				"worth"		=> 100);
+				"worth"		=> $this->_value->staff_valuation($tag_id, $tag_lvl));
 			$this->db->insert($this->_staff, $s);
 			
 			$t = array("staff_id"	=> $this->db->insert_id(),
-				"tag_id"	=> rand(1,20),
-				"tag_lvl"	=> rand(1, 6));
+				"tag_id"	=> $tag_id,
+				"tag_lvl"	=> $tag_lvl);
 			$this->db->insert($this->_staff_tag, $t);
 		}
 	}
@@ -124,7 +127,7 @@ class Staff_model extends Model {
 	{
 		$raw_names = "Jacob Isabella Ethan Sophia Michael Emma Jayden Olivia William Ava Alexander Emily Noah Abigail Daniel Madison Aiden Chloe Anthony Mia";
 		$names = explode(" ", $raw_names);
-		return $names[rand(0, count($names))]; 
+		return $names[rand(1, count($names))]; 
 	}
 	
 	function hireStaff($id)
