@@ -83,7 +83,7 @@ class Project_model extends Model {
 				$result['tags'][$k]['goal'] = 10;
 				$result['tags'][$k]['progress'] = 3;
 			}
-		}		
+		//}		
 		return $result;
 	}
 	

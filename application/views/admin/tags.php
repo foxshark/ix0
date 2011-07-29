@@ -1,14 +1,13 @@
-<? pre_print_r($tags) ?>
+<? //pre_print_r($tags) ?>
 
 <ol class="ilist hire">
-<? foreach($staff_data as $s) { ?>
+<? foreach($tags as $t) { ?>
 	<li class="clearfix">
-		<span class="name"><?= $s['name'] ?></span> 
-		<? foreach($s['tag'] as $t) { ?>
-			<a href="#" class="tag"><?= $t['name']?><span class="level"><?= $t['tag_lvl']?></span></a>         	
-        <? } ?>
-		<span class="price"><?= ($s['worth']/$co_worth)*100 ?>%</span>
-		<a href="<?= base_url()?>staff/finalizeHire/<?= $s['id']?>" class="button hire small">Hire</a>
+		<span class="name"><?= $t['id'] ?></span>
+		<span class="name"><?= $t['name'] ?></span> 
+		<span class="name"><?= $t['valuation'] ?></span> 
+		<span class="name"><?= $t['tag_category'] ?></span> 
+		<a href="<?= base_url()?>admin/tag/<?= $t['id']?>" class="button hire small">Update</a>
 	</li>
     <? } ?>
 </ol>
