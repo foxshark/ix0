@@ -139,4 +139,25 @@ class Staff_model extends Model {
 		$this->db->update($this->_staff, $data); 
 	}
 	
+	function getTotalOutput()
+	{
+		$co_id	= $this->session->userdata('id');
+
+		$this->db->select('staff_tag.*');
+		$this->db->join('staff', 'staff.id = staff_tag.staff_id', 'left');
+		$this->db->where('staff.company', $co_id); 
+		$query = $this->db->get($this->_staff_tag);
+
+		$tag	= array();
+		$staff	= array();
+		foreach ($query->result() as $row)
+		{
+			if(!isset($tag[$row->tag_id]['output'])) $tag[$row->tag_id]['output'] = 0;
+			$tag[$row->tag_id]['output']			+= $this->config->item("s_tag_".$row->tag_lvl);
+			$tag[$row->tag_id]['staff'][$row->staff_id]	= $row->tag_lvl;
+		}
+		
+		return $tag;
+
+	}
 }

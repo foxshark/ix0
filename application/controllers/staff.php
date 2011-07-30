@@ -41,6 +41,7 @@ class Staff extends Controller {
 		$data['page_title']		= "Staff Overview";
 		$data['content']['main']	= 'staff_overview';
 		$data['staff_data']		= $this->_staff->getUserOverview($this->session->userdata('id'));
+		$data['output']			= $this->_staff->getTotalOutput();
 		buildLayout($data);
 	}
 
