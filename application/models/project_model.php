@@ -41,12 +41,7 @@ class Project_model extends Model {
 		
 		// get basic project info
 		$result = array();
-		$tags	= array();
-		
-		//pre_print_r($id);
-		
-		$this->db->where_in('id', $id); 	
-		
+		$this->db->where_in('id', $id); 
 		$query = $this->db->get($this->_table_project);
 		foreach ($query->result() as $row)
 		{
@@ -64,19 +59,21 @@ class Project_model extends Model {
 		//die();
 		
 		// get project tags
-		if(!empty($result)){
-			$this->db->select('tag_id AS id, lvl, turns_to_complete, completed');
-			$this->db->where_in('project_id', $p_ids);
-			$this->db->order_by('lvl', 'desc');
-			$query = $this->db->get($this->_table_project_tag);
-			foreach ($query->result() as $row)
-			{
-				$tags[$row->id] = $row->id;
-				$result['tags'][$row->id] = get_object_vars($row);
-			}		
+
+		$this->db->select('tag_id AS id, lvl, turns_to_complete, completed');
+		$this->db->where_in('project_id', $p_ids);
+		$this->db->order_by('lvl', 'desc');
+		$query = $this->db->get($this->_table_project_tag);
+		foreach ($query->result() as $row)
+		{
+			$tags[$row->id] = $row->id;
+			$result['tags'][$row->id] = get_object_vars($row);
+		}
 		
-			// use tag model to get tag info
-			$tags = $this->_tag->getTags($tags);
+		
+		
+		// use tag model to get tag info
+		$tags = $this->_tag->getTags($tags);
 		
 			foreach($result['tags'] as $k => $v)
 			{
@@ -86,7 +83,7 @@ class Project_model extends Model {
 				$result['tags'][$k]['goal'] = 10;
 				$result['tags'][$k]['progress'] = 3;
 			}
-		}		
+		//}		
 		return $result;
 	}
 	
@@ -112,23 +109,13 @@ class Project_model extends Model {
 			get basic info for all projects assigned to a company id			
 		*/
 		
-		$project_ids = array();
-		
-		// get all projects for this company
-		$this->db->select('id');
-		$this->db->where('company_id',$company_id);
-		$this->db->order_by('created','modified');
-		$query = $this->db->get($this->_table_project);
-		foreach ($query->result() as $row)
-		{
-			$project_ids[] = $row->id;
-		}	
+		// get all project ids (hardcoded for now)
+		$project_ids = array(1);
 		
 		// get project tags for each project
-		$result = $this->getProjectBasic($project_ids);
-		pre_print_r($result);
-		die();
-		
+		$result[] = $this->getProjectBasic($project_ids);
+		//pre_print_r($result);
+		//die();
 		return $result;
 		
 	}

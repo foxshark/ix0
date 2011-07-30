@@ -4,12 +4,14 @@
 	<ol class="dash-list">				
 	<? foreach($p['tags'] as $p_tag) : ?>
 		<? if($p_tag['lvl'] > 0) : ?>		
+
 		<li class="clearfix">
 			<a href="#" class="tag"><?= $p_tag['name']?> <span class="level"><?= $p_tag['lvl']?></span></a> <?= $p_tag['progress']?> / <?=$p_tag['goal']?>
 		</li>
 		<? endif; ?>
 	<? endforeach; ?>
-	</ol>	
+	</ol>
+	
 </section>
 
 <section>

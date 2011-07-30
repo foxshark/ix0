@@ -42,4 +42,9 @@ class Valuation_model extends Model {
 		//pre_print_r($staff); die;	
 		return $staff;
 	}
+	
+	function staff_valuation($tag_id, $tag_lvl)
+	{
+		return rand(10, 100);
+	}
 }

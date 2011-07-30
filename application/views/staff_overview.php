@@ -15,4 +15,5 @@
 			</ol>
 			<p><a href="<?= base_url()?>staff/hire">Hire Staff</a></p>
 	</div>
+	<? pre_print_r($output)?>
 </div>
