@@ -43,6 +43,8 @@ class Project_model extends Model {
 		$result = array();
 		$tags	= array();
 		
+		//pre_print_r($id);
+		
 		$this->db->where_in('id', $id); 	
 		
 		$query = $this->db->get($this->_table_project);
@@ -110,13 +112,23 @@ class Project_model extends Model {
 			get basic info for all projects assigned to a company id			
 		*/
 		
-		// get all project ids (hardcoded for now)
-		$project_ids = array(1);
+		$project_ids = array();
+		
+		// get all projects for this company
+		$this->db->select('id');
+		$this->db->where('company_id',$company_id);
+		$this->db->order_by('created','modified');
+		$query = $this->db->get($this->_table_project);
+		foreach ($query->result() as $row)
+		{
+			$project_ids[] = $row->id;
+		}	
 		
 		// get project tags for each project
-		$result[] = $this->getProjectBasic($project_ids);
-		//pre_print_r($result);
-		//die();
+		$result = $this->getProjectBasic($project_ids);
+		pre_print_r($result);
+		die();
+		
 		return $result;
 		
 	}
