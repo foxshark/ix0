@@ -22,4 +22,22 @@ class Admin extends Controller {
 		$data['tags']			= $this->_tags->getTags();
 		buildLayout($data);
 	}
+	
+	function modtag($t=0)
+	{
+		$data['page_title']			= "Admin: Tags";
+		$data['content']['main']		= 'admin/edittag';
+		$data['t']				= $this->_tags->getTag($t);
+		buildLayout($data);	
+	}
+	
+	function savetag($id=0)
+	{
+		//pre_print_r($_POST);
+		if(!empty($_POST))
+		{
+			$this->_tags->updateTag($id);
+		}
+		redirect('admin');	
+	}
 }
