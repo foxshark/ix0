@@ -42,7 +42,7 @@
 			<ul data-role="listview" data-inset="true">
 				<? foreach($projects as $p) : ?>
 				<li><a href="<?= base_url()?>project/overview/<?=$p['id']?>/"><?=$p['name']?></a>
-					<ol class="dash-list">					
+					<? /*?><ol class="dash-list">					
 					<? foreach($p['tags'] as $t) : ?>
 						<? if($t['lvl'] > 0) : ?>
 						<li class="clearfix">
@@ -50,7 +50,7 @@
 						</li>
 						<? endif; ?>
 					<? endforeach; ?>
-					</ol>
+					</ol><? */ ?>
 				</li>
 				<? endforeach; ?>
 			</ul>

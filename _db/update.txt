@@ -11,3 +11,36 @@ NULL , '1', 'My First Pyramid', '2011-07-25 20:56:17', '2011-07-25 20:56:20'
 
 7/29/11 Kyle
 ALTER TABLE `tags` CHANGE `valueation` `valuation` INT( 11 ) NOT NULL 
+
+
+7/31/2011 Jordan
+----------------
+
+ALTER TABLE `tags` CHANGE `craeted` `created` DATETIME NOT NULL 
+
+NSERT INTO `ip0_r4zf3st`.`company` (
+`id` ,
+`user_id` ,
+`name` ,
+`updated` ,
+`created`
+)
+VALUES (
+NULL , '2', 'BlightGoals', '2011-07-31 11:23:21', '2011-07-31 11:23:23'
+), (
+NULL , '1', 'Simpixelated', '2011-07-31 12:02:30', '2011-07-31 12:02:32'
+);
+
+INSERT INTO `ip0_r4zf3st`.`project` (
+`id` ,
+`company_id` ,
+`name` ,
+`updated` ,
+`created`
+)
+VALUES (
+NULL , '2', 'Facebook for Dogs', '2011-07-31 12:04:54', '2011-07-31 12:04:57'
+);
+
+ALTER TABLE `staff` ADD `equity` INT NOT NULL DEFAULT '0' AFTER `worth` 
+

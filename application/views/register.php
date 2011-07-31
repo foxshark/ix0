@@ -1,5 +1,4 @@
-<h1>Register</h1>
-
+<p><a href="<?=base_url()?>login">I'm already registered</a>.</p>
 <form method="post" action="">
 	
 	<section>

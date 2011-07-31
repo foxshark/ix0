@@ -23,9 +23,9 @@ class Home extends Controller {
 	{
 		$this->load->model('project_model','_project');
 		$this->load->model('staff_model','_staff');
+		$this->load->model('company_model','_company');
 		
-		// hard code the company id for now
-		$company_id = 1;
+		$company = $this->_company->getCompany($this->session->userdata('id'));
 	
 		$data['valuation_snapshot']			= $this->_value->getCompanyTotal();
 
@@ -36,7 +36,7 @@ class Home extends Controller {
 		
 		//$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'),1);
 		// replace the above function with getAllProjects, which will contain skill_data for each project
-		$data['projects'] = $this->_project->getAllProjects($company_id);
+		$data['projects'] = $this->_project->getCompanyProjects($company['id']);
 
 		//$data['user_details'] = $this->_users->getMyStats();
 		//buildLayout($data, "mobile");
@@ -65,7 +65,7 @@ class Home extends Controller {
 			}
 	
 			$data['page_title'] = "Login";
-			$data['content']['main'] = array('login','register');
+			$data['content']['main'] = array('login');
 			
 			// uncomment to see hiring interface
 			//$data['content']['main'] = 'hire';
@@ -78,5 +78,17 @@ class Home extends Controller {
 	{
 		$this->simplelogin->logout();
 		redirect(base_url());
+	}
+	
+	function register()
+	{
+		// validate
+		// if good, insert into db
+		// auto login? or direct to login page
+		
+		// assemble our view data
+		$data['page_title'] = "Register";
+		$data['content']['main'] = array('register');
+		buildLayout($data);
 	}
 }

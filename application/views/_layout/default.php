@@ -8,7 +8,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	
-	<title>IPO Fest</title>
+	<? $names = array("IPOfestr","Strtup","Strtup","Startup","Betaville","IPOville","eWebnet","Dotcom Bust","Dotcom Bubble Burster","Dot Dot Dot Com"); $site_name = $names[array_rand($names)] . " (alpha)"; ?>
+	<title><?=$site_name?></title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 	
@@ -27,7 +28,7 @@
 
 	<header>
 	
-		<h2>IPOfestr <em>beta</em></h2>
+		<h2><?=$site_name?></h2>
 		<? if($this->session->userdata('logged_in')){?>
 		<ul class="user-links">
 			<li><a href="<?=base_url()?>">Dashboard</a></li>

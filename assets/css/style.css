@@ -494,6 +494,20 @@ label {
 	width: 452px;
 }
 
+header {
+	position: relative;
+	padding: 10px;
+}
+header .user-links {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	list-style: none;
+}
+header .user-links li {
+	float: left;
+	margin: 0 10px;
+}
 
 
 
