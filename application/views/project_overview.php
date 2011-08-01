@@ -21,7 +21,7 @@
     <? foreach($t as $k => $v) : ?>
         <? if($v['lvl'] < 1) : ?>
         <li class="clearfix">
-            <a href="<?=base_url()?>project/addtag/1/<?=$k?>" class="add-tag">Add</a>
+            <a href="<?=base_url()?>project/addtag/<?= $p['id'] ?>/<?=$k?>" class="add-tag">Add</a>
             <a href="#" class="tag t0"><?= $v['name']?> <span class="level"><?= $v['lvl']?></span></a>
         </li>
 		<? endif; ?>

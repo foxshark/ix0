@@ -24,6 +24,7 @@ function is_myproject($project_id)
 	// permission granted if requested project id matches
 	foreach($projects as $p)
 	{
+	//pre_print_r($projects); die;
 		if($p['id'] === $project_id)
 		{
 			return true;

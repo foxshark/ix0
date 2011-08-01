@@ -27,7 +27,7 @@ class Project_model extends Model {
 		$query = $this->db->get($this->_table_project);
 		foreach ($query->result() as $row)
 		{
-			$result[] = get_object_vars($row);
+			$result[$row->id] = get_object_vars($row);
 		}
 		
 		//echo $this->db->last_query();pre_print_r($result);die();
