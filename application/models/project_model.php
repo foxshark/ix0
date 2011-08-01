@@ -81,9 +81,11 @@ class Project_model extends Model {
 		$data = array(
 			"company_id"		=> $company_id,
 			"project_id"		=> $project_id,
-			"tag_id"			=> $tag_id,
-			"lvl"				=> 1,
-			"turns_to_complete"	=> $this->config->item('tag_1')
+			"tag_id"		=> $tag_id,
+			"lvl"			=> 0,
+			"turns_to_complete"	=> $this->config->item('tag_1'),
+			"turns_timer"		=> time(),
+			"completed"		=> date("Y-m-d H:i:s")
 			);
 		
 		$this->db->insert($this->_table_project_tag, $data);

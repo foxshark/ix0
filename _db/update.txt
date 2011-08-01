@@ -16,9 +16,9 @@ ALTER TABLE `tags` CHANGE `valueation` `valuation` INT( 11 ) NOT NULL
 7/31/2011 Jordan
 ----------------
 
-ALTER TABLE `tags` CHANGE `craeted` `created` DATETIME NOT NULL 
+ALTER TABLE `tags` CHANGE `craeted` `created` DATETIME NOT NULL ;
 
-NSERT INTO `ip0_r4zf3st`.`company` (
+INSERT INTO `ip0_r4zf3st`.`company` (
 `id` ,
 `user_id` ,
 `name` ,
@@ -42,5 +42,7 @@ VALUES (
 NULL , '2', 'Facebook for Dogs', '2011-07-31 12:04:54', '2011-07-31 12:04:57'
 );
 
-ALTER TABLE `staff` ADD `equity` INT NOT NULL DEFAULT '0' AFTER `worth` 
+ALTER TABLE `staff` ADD `equity` INT NOT NULL DEFAULT '0' AFTER `worth`;
 
+8/1/11 - Kyle
+ALTER TABLE `project_tag` ADD `turns_timer` INT NOT NULL DEFAULT '0' AFTER `turns_to_complete`;

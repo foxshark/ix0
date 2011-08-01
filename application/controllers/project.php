@@ -26,7 +26,7 @@ class Project extends Controller {
 		
 		$project_id 				= $id;
 		$project_data 				= $this->_project->getProjectDetails($project_id);
-		$tag_data 					= $this->_staff->getStaffTagsOnly($this->session->userdata('id'));	
+		$tag_data				= $this->_staff->getStaffTagsOnly($this->session->userdata('id'));	
 		
 		// assemble our $data for the view
 		$data['page_title']			= "Project Overview";

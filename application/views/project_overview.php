@@ -1,9 +1,10 @@
+<? pre_print_r($p); ?>
 <section>
 	<h3>Tags that I have</h3>
 	
 	<ol class="dash-list">				
 	<? foreach($p['tags'] as $p_tag) : ?>
-		<? if($p_tag['lvl'] > 0) : ?>		
+		<? if($p_tag['lvl'] > 0 || $p_tag['turns_to_complete'] > 0) : ?>		
 
 		<li class="clearfix">
 			<a href="#" class="tag"><?= $p_tag['name']?> <span class="level"><?= $p_tag['lvl']?></span></a> <?= $p_tag['progress']?> / <?=$p_tag['goal']?>
@@ -19,7 +20,7 @@
 	<h3>Tags that I can add</h3>
     <ol class="dash-list">
     <? foreach($t as $k => $v) : ?>
-        <? if($v['lvl'] < 1) : ?>
+        <? if($v['lvl'] < 1 && $v['goal'] < 1) : ?>
         <li class="clearfix">
             <a href="<?=base_url()?>project/addtag/<?= $p['id'] ?>/<?=$k?>" class="add-tag">Add</a>
             <a href="#" class="tag t0"><?= $v['name']?> <span class="level"><?= $v['lvl']?></span></a>
