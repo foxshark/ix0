@@ -22,17 +22,31 @@ class Project_model extends Model {
 		$this->db->where('company_id', $this->session->userdata('company_id')); 
 		$this->db->where('turns_timer <', time() - (60*60));
 		$query = $this->db->get($this->_table_project_tag);
-		foreach ($query->result() as $row)
+		if(!empty($query))
 		{
-			$this->_advanceProjectTag(get_object_vars($row));
+			$output = $this->_staff->getTotalOutput();
+			pre_print_r($output);
+			foreach ($query->result() as $row)
+			{
+				$this->_advanceProjectTag(get_object_vars($row), $output);
+			}
 		}
 		die;
 	}
 	
-	function _advanceProjectTag($tag)
+	function _advanceProjectTag($tag, $output)
 	{
-		$tag['turns'] 				= floor((time() - $tag['turns_timer']) / (60*60));
-		$tag['seconds_completed']	= $tag['turns'] * 60 * 60;
+		$turns_completed		= floor((time() - $tag['turns_timer']) / (60*60));
+		$seconds_completed		= $turns_completed * 60 * 60;
+		
+		
+		
+		$lvls = 1;
+		$data = array('lvl'=>$tag['lvl']+$lvls, 'turns_timer'=>$tag['turns_timer']+$seconds_completed);
+		
+		pre_print_r($data);
+		$this->db->where('id', $tag['id']);
+//		$this->db->update($this->_table_project_tag, $data);
 		pre_print_r($tag);
 	}
 	
