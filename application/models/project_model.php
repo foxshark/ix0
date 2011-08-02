@@ -16,6 +16,26 @@ class Project_model extends Model {
 		$this->config->load('taglvl');
 	}
 	
+	function checkForMyOutstandingProjects()
+	{
+//	$result['tags'][$k]['next_turn']	= (60*60) - (time() - $row->turns_timer);
+		$this->db->where('company_id', $this->session->userdata('company_id')); 
+		$this->db->where('turns_timer <', time() - (60*60));
+		$query = $this->db->get($this->_table_project_tag);
+		foreach ($query->result() as $row)
+		{
+			$this->_advanceProjectTag(get_object_vars($row));
+		}
+		die;
+	}
+	
+	function _advanceProjectTag($tag)
+	{
+		$tag['turns'] 				= floor((time() - $tag['turns_timer']) / (60*60));
+		$tag['seconds_completed']	= $tag['turns'] * 60 * 60;
+		pre_print_r($tag);
+	}
+	
 	function getCompanyProjects($company_id)
 	{
 		/* 			
@@ -55,7 +75,8 @@ class Project_model extends Model {
 		$result['tags'] = array();
 		
 		// get the tags assigned to this project as well as info about each tag
-		$this->db->select('lvl,turns_to_complete,completed,tag_id,name,valuation,tag_category,updated,created');
+//		$this->db->select('lvl,turns_to_complete,completed,tag_id,name,valuation,tag_category,updated,created');
+		$this->db->select();
 		$this->db->join($this->_table_tags, $this->_table_project_tag.'.tag_id = '.$this->_table_tags.'.id');
 		$this->db->where('project_id',$project_id);
 		$this->db->order_by('turns_to_complete');
@@ -68,8 +89,9 @@ class Project_model extends Model {
 		// hard code goal/progress
 		foreach($result['tags'] as $k => $v)
 		{
-			$result['tags'][$k]['goal'] = 10;
-			$result['tags'][$k]['progress'] = 3;
+			$result['tags'][$k]['next_turn']	= (60*60) - (time() - $row->turns_timer);
+			$result['tags'][$k]['goal']			= $row->turns_to_complete;
+			$result['tags'][$k]['progress']		= $this->config->item('tag_1') - $row->turns_to_complete;
 		}	
 		
 		//pre_print_r($result); die();
@@ -82,7 +104,7 @@ class Project_model extends Model {
 		$result = $this->_staff->getStaffTagsOnly($company_id);
 		$project = $this->getProjectDetails($project_id);
 		
-		//pre_print_r($project['tags']);die();
+//		pre_print_r($project);die();
 		
 		// remove tags that are already in progress
 		foreach($project['tags'] as $k => $v)
@@ -92,7 +114,7 @@ class Project_model extends Model {
 				unset($result[$v['tag_id']]);
 			}
 		}
-		
+//		pre_print_r($result); die;
 		return $result;
 	}
 	
