@@ -58,7 +58,7 @@ ALTER TABLE `company` ADD `user_equity` INT NOT NULL DEFAULT '100' AFTER `user_i
 
 8/2/11 - Jordan
 ---------------
-!!!import tank_auth_schema first!!!
+!!!drop users and import tank_auth_schema first!!!
 
 ALTER TABLE  `user_profiles` ADD  `active_company` INT NOT NULL
 ALTER TABLE  `user_profiles` CHANGE  `active_company`  `active_company_id` INT( 11 ) NOT NULL
@@ -66,3 +66,7 @@ ALTER TABLE  `user_profiles` CHANGE  `active_company`  `active_company_id` INT( 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `activated`, `banned`, `ban_reason`, `new_password_key`, `new_password_requested`, `new_email`, `new_email_key`, `last_ip`, `last_login`, `created`, `modified`) VALUES
 (1, 'simpixelated', '$P$B/z2NOp8CO3AwOLNQczWUT1QGa4tK/.', 'jordan@sitegoals.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2011-08-02 15:20:16', '2011-08-02 15:15:38', '2011-08-02 14:20:16'),
 (2, 'foxshark', '$P$Bb57G5rF8qZCC42ajnPdw1Pf8RgBvv1', 'kyle@sitegoals.com', 1, 0, NULL, NULL, NULL, NULL, NULL, '127.0.0.1', '2011-08-02 15:25:15', '2011-08-02 15:20:46', '2011-08-02 14:25:15');
+
+8/3/11 - Jordan
+---------------
+ALTER TABLE `user_profiles` DROP `active_company_id` ;

@@ -16,22 +16,26 @@ class Project_model extends CI_Model {
 		$this->config->load('taglvl');
 	}
 	
-	function getCompanyProjects($company_id)
+	function getCompanyProjects($company_id=false)
 	{
 		/* 			
 			get basic info for all projects assigned to a company id		
 		*/
 		
+		// if no ID passed, assume current user's active company
+		if(!$company_id){ $company_id = $this->session->userdata('company_id'); }
+		
 		$result = array();
 		
-		$this->db->where('company_id', $company_id); 
-		$query = $this->db->get($this->_table_project);
-		foreach ($query->result() as $row)
-		{
-			$result[$row->id] = get_object_vars($row);
+		if($company_id)
+		{		
+			$this->db->where('company_id', $company_id); 
+			$query = $this->db->get($this->_table_project);
+			foreach ($query->result() as $row)
+			{
+				$result[$row->id] = get_object_vars($row);
+			}
 		}
-		
-		//echo $this->db->last_query();pre_print_r($result);die();
 		
 		return $result;
 	}
@@ -109,11 +113,7 @@ class Project_model extends CI_Model {
 		
 		$this->db->insert($this->_table_project_tag, $data);
 		//return $data;
-	}
-	
-	
-	
-	
+	}	
 	
 	/* replaced by getProjectDetails
 	function getProjectBasic($id)
