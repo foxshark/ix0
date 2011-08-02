@@ -34,8 +34,8 @@ class Company_model extends CI_Model {
 	function getActiveCompanyID($user_id=false)
 	{
 		/*
-			get the currently active company for a user
-			note: this could be phased out in the future to allow for multiple active companies
+		*   get the currently active company for a user
+		*	note: this could be phased out in the future to allow for multiple active companies
 		*/
 		
 		// if no ID passed, assume current logged in user
@@ -61,6 +61,48 @@ class Company_model extends CI_Model {
 		}
 		
 		return $result;
+		
+	}
+	
+	
+	
+	
+	// work in progress
+	// see: http://heybigname.com/2009/08/28/how-to-write-a-better-model-in-code-igniter/
+	// and: http://blog.builtbyprime.com/php/a-guide-to-generic-code-igniter-models
+	
+	
+	/*
+	*  returns false if the $data array does not contain all of the keys assigned by the $required array.
+	*/
+	function _required($required, $data)
+	{
+		foreach($required as $field) if(!isset($data[$field])) return false;
+		return true;
+	}
+	
+	function _default($defaults, $options)
+	{
+		return array_merge($defaults, $options);
+	}
+	
+	/*function exampleFunction($options = array())
+	{
+		// required values
+		if(!$this->_required(array('userEmail'), $options)) return false;
+	
+		// default values
+		$options = $this->_default(array('userStatus' => 'active'), $options);
+	}*/
+	
+	function newgetCompany($options = array())
+	{
+		// default values
+		$default = array(
+			'company_id' => $this->session->userdata('company_id'),
+			'limit' => 1			
+			);
+		$options = $this->_default($default, $options);	
 		
 	}
 	
