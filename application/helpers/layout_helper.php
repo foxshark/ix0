@@ -6,8 +6,8 @@ function buildLayout($data = false, $layout_template = "default") //mobile
 	$data['css_url'] = base_url();
 	
 	// expose our data to the view
-	if(!isset($data['css_id'])){
-		$data['css_id']	= "page_default";
+	if(!isset($data['page_title_short'])){
+		$data['page_title_short'] = "page";
 	}
 	if(!isset($data['content'])){
 		$data['content'] = "hi";

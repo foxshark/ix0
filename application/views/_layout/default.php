@@ -22,7 +22,7 @@
 
 </head>
 
-<body>
+<body class="<?=$page_title_short?>">
 
 <div id="container">
 
@@ -36,12 +36,12 @@
 			<li><?=$this->session->userdata('username')?> | <a href="<?=base_url()?>logout">Logout</a></li>
 		</ul>
 		<? } ?>
-        
-        <? if(isset($page_title)){?>
-            <h1><?=$page_title?></h1>
-        <? }?>
 	
 	</header>
+	
+	<? if(isset($page_title)){?>
+        <h1><?=$page_title?></h1>
+    <? }?>
 	
 	<div id="main" role="main">
 	

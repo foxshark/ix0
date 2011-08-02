@@ -482,21 +482,33 @@ label {
 }
 
 
-#main section {
+section {
 	padding: 10px;
-	margin: 10px;
+	margin: 10px 0;
 	border: 1px solid #eee;
 }
 
-#dashboard .staff,
-#dashboard .projects {
+.dash .staff {
 	float: left;
-	width: 452px;
+	width: 462px;
+}
+.dash .projects {
+	float: right;
+	width: 462px;
 }
 
 header {
 	position: relative;
+	padding: 10px 0 20px;
+}
+header h2 {
+	background: #888;
+	color: #fff;
+	text-shadow: 0px 1px 1px rgba(0,0,0,.3);
+	display: inline;
+	display: inline-block;
 	padding: 10px;
+	margin: 0;
 }
 header .user-links {
 	position: absolute;
@@ -509,7 +521,12 @@ header .user-links li {
 	margin: 0 10px;
 }
 
-
+#main {
+	padding: 10px 0;
+}
+#main > h2:first-child {
+	margin-top: 0;
+}
 
 
 /* =============================================================================

@@ -30,7 +30,9 @@ class Home extends Controller {
 		$data['valuation_snapshot']			= $this->_value->getCompanyTotal();
 
 		$data['page_title'] = "Dashboard";
+		$data['page_title_short'] = "dash";
 		$data['content']['main'] = 'dash';
+		
 		//$data['staff_data']		= $this->_staff->getUserOverview($this->session->userdata('id'));
 		$data['staff_data'] 		= $this->_staff->getStaffDetails($company['id']);
 		//$data['project_data']		= $this->_project->getProjectOverview($this->session->userdata('id'));		
