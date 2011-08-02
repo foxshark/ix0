@@ -25,9 +25,10 @@ class Project extends Controller {
 		if(!is_myproject($id)){	redirect();	}
 		
 		$project_id 				= $id;
-		$project_data 				= $this->_project->getProjectDetails($project_id);
-		$tag_data					= $this->_staff->getStaffTagsOnly($this->session->userdata('id'));	
-		pre_print_r($tag_data);
+		$project_data 				= $this->_project->getProjectDetails($id);
+		//$tag_data					= $this->_staff->getStaffTagsOnly($this->session->userdata('id'));	
+		// replaced getStaffTagsOnly with getAvailableTags which should take into consideration tags that are in progress
+		$tag_data					= $this->_project->getAvailableTags($this->session->userdata('company_id'), $project_id);
 		
 		// assemble our $data for the view
 		$data['page_title']			= "Project Overview";

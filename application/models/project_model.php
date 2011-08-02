@@ -12,6 +12,7 @@ class Project_model extends Model {
 		$this->_table_tags =			"tags";
 		
 		$this->load->model('tag_model','_tag');
+		$this->load->model('staff_model','_staff');
 		$this->config->load('taglvl');
 	}
 	
@@ -74,6 +75,15 @@ class Project_model extends Model {
 		//pre_print_r($result); die();
 		
 		return $result;
+	}
+	
+	function getAvailableTags($company_id, $project_id)
+	{
+		$staff_tags = $this->_staff->getStaffTagsOnly($company_id);
+		//pre_print_r($staff_tags);die();
+		
+		$data = $staff_tags;
+		return $data;
 	}
 	
 	function addProjectTag($company_id, $project_id, $tag_id)

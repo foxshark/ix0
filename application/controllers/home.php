@@ -7,6 +7,7 @@ class Home extends Controller {
 		//$this->load->library('form_validation');
 		$this->load->model('user_model','_users');
 		$this->load->model('valuation_model','_value');
+		$this->load->model('company_model','_company');
 		
 	}
 	
@@ -23,9 +24,8 @@ class Home extends Controller {
 	{
 		$this->load->model('project_model','_project');
 		$this->load->model('staff_model','_staff');
-		$this->load->model('company_model','_company');
 		
-		$company = $this->_company->getCompany($this->session->userdata('id'));
+		$company = $this->_company->getCompany($this->session->userdata('company_id'));
 	
 		$data['valuation_snapshot']			= $this->_value->getCompanyTotal();
 
@@ -60,6 +60,12 @@ class Home extends Controller {
 			{
 				if($this->simplelogin->login($this->input->post('username'),$this->input->post('password')))
 				{
+					$company_id = $this->_company->getActiveCompanyID($this->session->userdata('id'));
+					if(!$company_id)
+					{
+						// redirect them to create a company screen
+					}
+					$this->session->set_userdata('company_id',$company_id);
 					redirect(base_url());
 				}
 			}

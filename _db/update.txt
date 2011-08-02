@@ -46,3 +46,10 @@ ALTER TABLE `staff` ADD `equity` INT NOT NULL DEFAULT '0' AFTER `worth`;
 
 8/1/11 - Kyle
 ALTER TABLE `project_tag` ADD `turns_timer` INT NOT NULL DEFAULT '0' AFTER `turns_to_complete`;
+
+8/1/11 - Jordan
+---------------
+ALTER TABLE `company` ADD `active` INT NOT NULL DEFAULT '0' AFTER `name`
+
+UPDATE `ip0_r4zf3st`.`company` SET `active` = '1' WHERE `company`.`id` =1;
+UPDATE `ip0_r4zf3st`.`company` SET `active` = '1' WHERE `company`.`id` =2;

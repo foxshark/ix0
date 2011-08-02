@@ -19,8 +19,8 @@ function is_myproject($project_id)
 	$CI->load->model('company_model','_company');
 	
 	// get all projects for the company ID tied to this user's session id
-	$company = $CI->_company->getCompany($CI->session->userdata('id'));
-	$projects = $CI->_project->getCompanyProjects($company['id']);
+	//$company = $CI->_company->getCompany($CI->session->userdata('id'));
+	$projects = $CI->_project->getCompanyProjects($CI->session->userdata('company_id'));
 	// permission granted if requested project id matches
 	foreach($projects as $p)
 	{
