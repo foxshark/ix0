@@ -91,4 +91,12 @@ class Home extends Controller {
 		$data['content']['main'] = array('register');
 		buildLayout($data);
 	}
+	
+	function rules()
+	{
+		// assemble our view data
+		$data['page_title'] = "Game Rules";
+		$data['content']['main'] = array('rules');
+		buildLayout($data);
+	}
 }

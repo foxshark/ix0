@@ -32,6 +32,7 @@
 		<? if($this->session->userdata('logged_in')){?>
 		<ul class="user-links">
 			<li><a href="<?=base_url()?>">Dashboard</a></li>
+			<li><a href="<?=base_url()?>home/rules">Rules</a></li>
 			<li><a href="<?=base_url()?>logout">Logout</a></li>
 		</ul>
 		<? } ?>
