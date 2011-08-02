@@ -1,11 +1,11 @@
 <?php
 
-class Valuation_model extends Model {
+class Valuation_model extends CI_Model {
 
 	// create a sample object out patient info
-	function Valuation_model ()
+	function __construct()
 	{
-		parent::Model();
+		parent::__construct();
 		
 		// Tables being used:
 		$this->_staff		= 'staff';
@@ -15,7 +15,7 @@ class Valuation_model extends Model {
 	
 	function getCompanyTotal($id = 0)
 	{
-		if($id == 0) $id = $this->session->userdata('id');
+		if($id == 0) $id = $this->tank_auth->get_user_id();
 		$this->db->where('company_id', $id); 
 		$this->db->limit(1);
 		$this->db->order_by("created", "desc");

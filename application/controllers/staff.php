@@ -1,13 +1,11 @@
 <?php
-class Staff extends Controller {
+class Staff extends CI_Controller {
 
 	function __construct()
 	{
 		parent::__construct();
 		
-		if(!$this->session->userdata('logged_in')) {
-			redirect('/home');
-		}
+		if (!$this->tank_auth->is_logged_in()) { redirect(); }
 		
 		$this->load->model('staff_model','_staff');
 		//$this->load->library('form_validation');

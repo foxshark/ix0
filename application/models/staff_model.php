@@ -1,11 +1,11 @@
 <?php
 
-class Staff_model extends Model {
+class Staff_model extends CI_Model {
 
 	// create a sample object out patient info
-	function Staff_model ()
+	function __construct()
 	{
-		parent::Model();
+		parent::__construct();
 		$this->load->model('valuation_model','_value');		
 		// Tables being used:
 		$this->_staff		= 'staff';

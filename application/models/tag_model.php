@@ -1,6 +1,6 @@
 <?php
 
-class Tag_model extends Model {
+class Tag_model extends CI_Model {
 
 	function __construct()
 	{

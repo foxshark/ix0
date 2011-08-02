@@ -1,11 +1,11 @@
 <?php
 
-class Admin_model extends Model {
+class Admin_model extends CI_Model {
 
 	// create a sample object out patient info
-	function Admin_model()
+	function __construct()
 	{
-		parent::Model();
+		parent::__construct();
 		
 		// Tables being used:
 		$this->_grid = 'grid_square';

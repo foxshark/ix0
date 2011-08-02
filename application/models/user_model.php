@@ -1,11 +1,11 @@
 <?php
 
-class User_model extends Model {
+class User_model extends CI_Model {
 
 	// create a sample object out patient info
-	function User_model ()
+	function __construct()
 	{
-		parent::Model();
+		parent::__construct();
 		
 		// Tables being used:
 		$this->_users	= 'users';
