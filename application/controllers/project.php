@@ -9,6 +9,7 @@ class Project extends Controller {
 		$this->load->model('project_model','_project');
 		$this->load->model('company_model','_company');
 		$this->load->model('staff_model','_staff');
+		$this->_project->checkForMyOutstandingProjects();
 	}
 	
 	function index()
@@ -36,6 +37,7 @@ class Project extends Controller {
 		$data['p']					= $project_data;
 		$data['t'] 					= $tag_data; 
 		buildLayout($data);
+		pre_print_r($data);
 	}
 	
 	function editProject($project_id)
@@ -54,7 +56,7 @@ class Project extends Controller {
 			// check to see if this project is assigned to this user/company
 			if(!is_myproject($project_id)){	redirect();	}
 			
-			$company = $this->_company->getCompany($this->session->userdata('id'));
+			$company = $this->_company->getCompany($this->session->userdata('company_id'));
 			if(!empty($company))
 			{
 				// do you have this tag available (staff with tag, not being used, not in progress)

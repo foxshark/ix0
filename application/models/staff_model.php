@@ -147,7 +147,7 @@ class Staff_model extends Model {
 	
 	function getTotalOutput()
 	{
-		$co_id	= $this->session->userdata('id');
+		$co_id	= $this->session->userdata('company_id');
 
 		$this->db->select('staff_tag.*');
 		$this->db->join('staff', 'staff.id = staff_tag.staff_id', 'left');

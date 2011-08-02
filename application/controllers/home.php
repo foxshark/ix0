@@ -24,7 +24,7 @@ class Home extends Controller {
 	{
 		$this->load->model('project_model','_project');
 		$this->load->model('staff_model','_staff');
-		//pre_print_r($this->session->userdata); die;
+		
 		$company = $this->_company->getCompany($this->session->userdata('company_id'));
 	
 		$data['valuation_snapshot']			= $this->_value->getCompanyTotal();

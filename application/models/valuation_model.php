@@ -15,7 +15,7 @@ class Valuation_model extends Model {
 	
 	function getCompanyTotal($id = 0)
 	{
-		if($id == 0) $id = $this->session->userdata('id');
+		if($id == 0) $id = $this->session->userdata('company_id');
 		$this->db->where('company_id', $id); 
 		$this->db->limit(1);
 		$this->db->order_by("created", "desc");
