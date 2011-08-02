@@ -7,6 +7,7 @@ class Project extends Controller {
 		//$this->load->library('form_validation');
 		//$this->load->model('user_model','_users');
 		$this->load->model('project_model','_project');
+		$this->load->model('company_model','_company');
 		$this->load->model('staff_model','_staff');
 	}
 	
@@ -20,63 +21,49 @@ class Project extends Controller {
 	function overview($id)
 	{	
 		
+		// check to see if this project is assigned to this user/company
+		if(!is_myproject($id)){	redirect();	}
+		
 		$project_id 				= $id;
-		$project_data 				= $this->_project->getProjectFull($project_id);
-		$tag_data 					= $this->_staff->getStaffTagsOnly($this->session->userdata('id'));
-		
-		//pre_print_r($project_data);
-		//die();
-		
-		//$data['project_data']		= $this->_project->getProjectOverview($this->session->userdata('id'));
-		
+		$project_data 				= $this->_project->getProjectDetails($id);
+		//$tag_data					= $this->_staff->getStaffTagsOnly($this->session->userdata('id'));	
+		// replaced getStaffTagsOnly with getAvailableTags which should take into consideration tags that are in progress
+		$tag_data					= $this->_project->getAvailableTags($this->session->userdata('company_id'), $project_id);
 		
 		// assemble our $data for the view
-		$data['page_title']			= "Projects Overview";
+		$data['page_title']			= "Project Overview";
 		$data['content']['main']	= 'project_overview';
-		$data['p'] = $project_data;
-		$data['t'] = $tag_data; 
+		$data['p']					= $project_data;
+		$data['t'] 					= $tag_data; 
 		buildLayout($data);
 	}
 	
 	function editProject($project_id)
 	{
-		$data['page_title']		= $project_id?"Edit Project":"Add Project";
+		$data['page_title']			= $project_id?"Edit Project":"Add Project";
 		$data['content']['main']	= 'project_edit';
-		$data['project_id']		= $project_id;
+		$data['project_id']			= $project_id;
 		//$data['project_data']		= $this->_fgrid->getAllSquares();
 		buildLayout($data);
 	}
 	
-	function update($project_id)
-	{
-		$this->load->library('form_validation');
-			$this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
-			$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
-			
-			if ($this->form_validation->run() == true)
-			{
-				if($this->simplelogin->login($this->input->post('username'),$this->input->post('password')))
-				{
-					redirect(base_url());
-				}
-			}
-	
-			$data['page_title'] = "Login";
-			$data['content']['main'] = array('login','register');
-			
-			// uncomment to see hiring interface
-			//$data['content']['main'] = 'hire';
-			
-			buildLayout($data);
-	}
-	
 	function addTag($project_id, $tag_id)
 	{
-		// is this your project?
-		// is this skill already in progress?
-			// if yes to both, add skill to project (last priority)
-			$this->_project->addProjectTag($project_id, $tag_id);
-		// else or after adding, redirect
-		redirect('project/overview');
+		if(user_confirm(base_url()."project/overview/$project_id"))
+		{
+			// check to see if this project is assigned to this user/company
+			if(!is_myproject($project_id)){	redirect();	}
+			
+			$company = $this->_company->getCompany($this->session->userdata('id'));
+			if(!empty($company))
+			{
+				// do you have this tag available (staff with tag, not being used, not in progress)
+				// if yes, add tag to project (last priority)
+				$this->_project->addProjectTag($company['id'], $project_id, $tag_id);	
+			}
+			
+			// else or after adding, redirect
+			redirect('project/overview/'.$project_id);
+		}
 	}
 }

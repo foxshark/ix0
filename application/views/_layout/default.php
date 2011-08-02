@@ -8,7 +8,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	
-	<title>IPO Fest</title>
+	<? $names = array("IPOfestr","Strtup","Strtup","Startup","Betaville","IPOville","eWebnet","Dotcom Bust","Dotcom Bubble Burster","Dot Dot Dot Com"); $site_name = $names[array_rand($names)] . " (alpha)"; ?>
+	<title><?=$site_name?></title>
 	<meta name="description" content="">
 	<meta name="author" content="">
 	
@@ -21,25 +22,26 @@
 
 </head>
 
-<body>
+<body class="<?=$page_title_short?>">
 
 <div id="container">
 
 	<header>
 	
-		<h2>IPOfestr <em>beta</em></h2>
+		<h2><?=$site_name?></h2>
 		<? if($this->session->userdata('logged_in')){?>
 		<ul class="user-links">
 			<li><a href="<?=base_url()?>">Dashboard</a></li>
-			<li><a href="<?=base_url()?>logout">Logout</a></li>
+			<li><a href="<?=base_url()?>home/rules">Rules</a></li>
+			<li><?=$this->session->userdata('username')?> | <a href="<?=base_url()?>logout">Logout</a></li>
 		</ul>
 		<? } ?>
-        
-        <? if(isset($page_title)){?>
-            <h1><?=$page_title?></h1>
-        <? }?>
 	
 	</header>
+	
+	<? if(isset($page_title)){?>
+        <h1><?=$page_title?></h1>
+    <? }?>
 	
 	<div id="main" role="main">
 	

@@ -22,6 +22,9 @@
     
     <section class="form-save">
 	    <button class="button">Login</button>
+		<p><a href="<?=base_url()?>register">Or register</a>.</p>
 	</section>
+	
+	
 
 </form>
