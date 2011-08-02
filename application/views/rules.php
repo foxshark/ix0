@@ -25,10 +25,12 @@
 <h4>Projects</h4>
 <ul>
 	<li>Projects are the largest contributor to your company's valuation.</li>
-	<li>A project's worth is based on the valuation of the tags (think of these as features) that have been added to them.</li>
-	<li>You can only add the tags to a project that your employees have <strike>and are not currently in use</strike>.</li>
-	<li>Tags will only be worked on in the order you added them. So if you only have 1 employee with Android(1), but add Android to multiple projects, your employee will only work on Android for one project at a time.</li>
-	
+	<li>A project's worth is based on the valuation of the tags (think of these as features) that have been added to them.
+	<ul>
+		<li>You can only add the tags to a project that your employees have <strike>and are not currently in use</strike>.</li>
+		<li>Adding a tag that is already on a project will simply increase the level of that tag.</li>
+		<li>Tags will only be worked on in the order you added them. So if you only have 1 employee with Android(1), but add Android to multiple projects, your employee will only work on Android for one project at a time.</li>
+	</ul></li>	
 </ul>
 
 <h4>Tags</h4>

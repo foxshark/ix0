@@ -79,11 +79,21 @@ class Project_model extends Model {
 	
 	function getAvailableTags($company_id, $project_id)
 	{
-		$staff_tags = $this->_staff->getStaffTagsOnly($company_id);
-		//pre_print_r($staff_tags);die();
+		$result = $this->_staff->getStaffTagsOnly($company_id);
+		$project = $this->getProjectDetails($project_id);
 		
-		$data = $staff_tags;
-		return $data;
+		//pre_print_r($project['tags']);die();
+		
+		// remove tags that are already in progress
+		foreach($project['tags'] as $k => $v)
+		{
+			if(array_key_exists($v['tag_id'],$result) && $v['turns_to_complete'] > 0)
+			{
+				unset($result[$v['tag_id']]);
+			}
+		}
+		
+		return $result;
 	}
 	
 	function addProjectTag($company_id, $project_id, $tag_id)
