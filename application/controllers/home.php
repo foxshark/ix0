@@ -33,11 +33,11 @@ class Home extends Controller {
 		$data['content']['main'] = 'dash';
 		//$data['staff_data']		= $this->_staff->getUserOverview($this->session->userdata('id'));
 		$data['staff_data'] 		= $this->_staff->getStaffDetails($company['id']);
-		//$data['project_data']		= $this->_project->getProjectOverview($this->session->userdata('id'));
-		
+		//$data['project_data']		= $this->_project->getProjectOverview($this->session->userdata('id'));		
 		//$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'),1);
 		// replace the above function with getAllProjects, which will contain skill_data for each project
 		$data['projects'] = $this->_project->getCompanyProjects($company['id']);
+		$data['company'] = $company;
 
 		//$data['user_details'] = $this->_users->getMyStats();
 		//buildLayout($data, "mobile");

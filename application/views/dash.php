@@ -1,9 +1,11 @@
 <div id="dashboard">
-<h1><?=$valuation_snapshot['valuation']?></h1>
-<h2 <?= $valuation_snapshot['valuation_change'] >=0 ? "" : "red"?>><?= $valuation_snapshot['valuation_change'] >=0 ? "+" : "-"?> <?=$valuation_snapshot['valuation_change']?></h2>
+
+	<h2><?=$company['name']?></h2>
 
 	<section>
 		<p>[graph]</p>
+		<p>current valuation: <?=$valuation_snapshot['valuation']?>, <span <?= $valuation_snapshot['valuation_change'] >=0 ? "" : "red"?>>change: <?= $valuation_snapshot['valuation_change'] >=0 ? "+" : "-"?> <?=$valuation_snapshot['valuation_change']?></span></p>
+		<p>Your equity: <?=$company['user_equity']?>%</p>
 	</section>
 	
 	<!--<section>
@@ -14,7 +16,7 @@
 	
 		<section class="staff">
 			<div data-role="collapsible">
-			<h3><a href="<?= base_url()?>staff/overview">My Staff</a></h3>
+			<h3><a href="<?= base_url()?>staff/overview">My Staff</a> (<?=count($staff_data)?>)</h3>
 			<ul class="dash-list" data-role="listview" data-inset="true">
 				<? foreach($staff_data as $s) : ?>
 				<li class="clearfix">
@@ -37,7 +39,7 @@
 		
 			<div data-role="collapsible">
 			
-			<h3>My Projects</h3>
+			<h3>My Projects (<?=count($projects)?>)</h3>
 			
 			<ul data-role="listview" data-inset="true">
 				<? foreach($projects as $p) : ?>
