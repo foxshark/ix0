@@ -1,3 +1,6 @@
+<h3><?=$p['name']?></h3>
+<p>started on <?=date('F jS, Y',strtotime($p['created']))?></p>
+
 <section>
 	<h3>Tags that I have</h3>
 	

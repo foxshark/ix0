@@ -32,7 +32,7 @@ class Home extends Controller {
 		$data['page_title'] = "Dashboard";
 		$data['content']['main'] = 'dash';
 		//$data['staff_data']		= $this->_staff->getUserOverview($this->session->userdata('id'));
-		$data['staff_data'] 		= $this->_staff->getAllStaff($company['id']);
+		$data['staff_data'] 		= $this->_staff->getStaffDetails($company['id']);
 		//$data['project_data']		= $this->_project->getProjectOverview($this->session->userdata('id'));
 		
 		//$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'),1);
