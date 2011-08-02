@@ -1,3 +1,4 @@
+<? pre_print_r($company)?>
 <h2><?=$company['name']?></h2>
 
 <section>
