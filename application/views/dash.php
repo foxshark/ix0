@@ -40,22 +40,12 @@
 		<h3>My Projects (<?=count($projects)?>)</h3>
 		
 		<ul data-role="listview" data-inset="true">
-			<? foreach($projects as $p) : ?>
-			<li><a href="<?= base_url()?>project/overview/<?=$p['id']?>/"><?=$p['name']?></a>
-				<? /*?><ol class="dash-list">					
-				<? foreach($p['tags'] as $t) : ?>
-					<? if($t['lvl'] > 0) : ?>
-					<li class="clearfix">
-						<a href="#" class="tag"><?= $t['name']?> <span class="level"><?= $t['lvl']?></span></a> <?= $t['progress']?> / <?=$t['goal']?>
-					</li>
-					<? endif; ?>
-				<? endforeach; ?>
-				</ol><? */ ?>
-			</li>
-			<? endforeach; ?>
+		<? foreach($projects as $p) : ?>
+			<li><a href="<?= base_url()?>project/overview/<?=$p['id']?>/"><?=$p['name']?></a></li>
+		<? endforeach; ?>
 		</ul>
 
-		<!--<p><a href="<?= base_url()?>project/0">Add Project</a></p>-->
+		<p><a href="<?= base_url()?>project/start">Start New Project</a></p>
 		
 		</div>
 		

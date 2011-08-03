@@ -13,6 +13,7 @@ class Project_model extends CI_Model {
 		
 		$this->load->model('tag_model','_tag');
 		$this->load->model('staff_model','_staff');
+		$this->load->model('crud_model','_crud');
 		$this->config->load('taglvl');
 	}
 	
@@ -80,19 +81,19 @@ class Project_model extends CI_Model {
 		return $result;
 	}
 	
-	function getAvailableTags($company_id, $project_id)
+	function getAvailableTags($company_id, $project_id=false)
 	{
 		$result = $this->_staff->getStaffTagsOnly($company_id);
-		$project = $this->getProjectDetails($project_id);
-		
-		//pre_print_r($project['tags']);die();
-		
-		// remove tags that are already in progress
-		foreach($project['tags'] as $k => $v)
-		{
-			if(array_key_exists($v['tag_id'],$result) && $v['turns_to_complete'] > 0)
+		if(!$project_id)
+		{ 		
+			$project = $this->getProjectDetails($project_id);
+			// remove tags that are already in progress
+			foreach($project['tags'] as $k => $v)
 			{
-				unset($result[$v['tag_id']]);
+				if(array_key_exists($v['tag_id'],$result) && $v['turns_to_complete'] > 0)
+				{
+					unset($result[$v['tag_id']]);
+				}
 			}
 		}
 		
@@ -113,7 +114,25 @@ class Project_model extends CI_Model {
 		
 		$this->db->insert($this->_table_project_tag, $data);
 		//return $data;
-	}	
+	}
+	
+	function addProject($options = array())
+	{
+		// required values
+		if(!$this->_crud->_required(array('name'), $options)) return false;
+	
+		// default values
+		$default = array(
+			'company_id' => $this->session->userdata('company_id'),
+			'updated' => date("Y-m-d H:i:s"),
+			'created' => date("Y-m-d H:i:s")
+		);
+		$data = $this->_crud->_default($default, $options);
+		
+		//pre_print_r($options);
+		$id = $this->_crud->insert('project',$data);
+		return $id;
+	}
 	
 	/* replaced by getProjectDetails
 	function getProjectBasic($id)

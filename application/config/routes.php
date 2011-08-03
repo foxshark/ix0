@@ -43,10 +43,12 @@
 $route['default_controller']	= "home";
 $route['scaffolding_trigger']	= "lhfjkgeh";
 
-$route['login']			= "home/login";
+$route['login']				= "home/login";
 $route['logout']			= "home/logout";
 $route['register']			= "home/register";
 
-$route['project/(:num)']			= "project/editProject/$1";
+$route['project/start']		= "project/addProject";
+$route['project/(:num)']	= "project/editProject/$1";
+
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */
