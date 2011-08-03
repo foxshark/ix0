@@ -23,18 +23,37 @@ class Project_model extends CI_Model {
 		$this->db->where('company_id', $this->session->userdata('company_id')); 
 		$this->db->where('turns_timer <', time() - (60*60));
 		$query = $this->db->get($this->_table_project_tag);
-		foreach ($query->result() as $row)
+		if(!empty($query))
 		{
-			$this->_advanceProjectTag(get_object_vars($row));
+			$output = $this->_staff->getTotalOutput();
+			foreach ($query->result() as $row)
+			{
+				$this->_advanceProjectTag(get_object_vars($row), $output);
+			}
 		}
-		die;
+
 	}
 	
-	function _advanceProjectTag($tag)
+	function _advanceProjectTag($tag, $output)
 	{
-		$tag['turns'] 				= floor((time() - $tag['turns_timer']) / (60*60));
-		$tag['seconds_completed']	= $tag['turns'] * 60 * 60;
-		pre_print_r($tag);
+		$turns_completed		= floor((time() - $tag['turns_timer']) / (60*60));
+		$seconds_completed		= $turns_completed * 60 * 60;
+		$per_turn_output		= $output[$tag['tag_id']]['output'];
+		$units_completed 		= $per_turn_output * $turns_completed;
+		$tag['turns_to_complete']	-= $units_completed;
+//		pre_print_r(array($turns_completed, $units_completed,$output));
+		if($tag['turns_to_complete'] <1)
+		{
+			$tag['lvl']++;
+			$tag['turns_to_complete']	= 0;
+		}
+
+		$data = array('lvl'=>$tag['lvl'], 'turns_to_complete'=>$tag['turns_to_complete'], 'turns_timer'=>$tag['turns_timer']+$seconds_completed);
+		
+		//pre_print_r($data);
+		$this->db->where('id', $tag['id']);
+		$this->db->update($this->_table_project_tag, $data);
+		//pre_print_r($tag);
 	}
 	
 
@@ -88,18 +107,20 @@ class Project_model extends CI_Model {
 		$query = $this->db->get($this->_table_project_tag);
 		foreach($query->result() as $row)
 		{
+			$row->next_turn	= (60*60) - (time() - $row->turns_timer);
+			$row->goal	= $this->config->item('tag_'.($row->lvl+1));
+			$row->progress	= $this->config->item('tag_'.($row->lvl+1)) - $row->turns_to_complete;
+			
+			if($row->turns_to_complete<1)
+			{
+			$row->goal	= 0;
+			$row->progress	= 0;			
+			}
+			
 			$result['tags'][] = get_object_vars($row);
 		}
 		
-		// hard code goal/progress
-		foreach($result['tags'] as $k => $v)
-		{
-			$result['tags'][$k]['next_turn']	= (60*60) - (time() - $row->turns_timer);
-			$result['tags'][$k]['goal']			= $row->turns_to_complete;
-			$result['tags'][$k]['progress']		= $this->config->item('tag_1') - $row->turns_to_complete;
-		}	
-		
-		//pre_print_r($result); die();
+//		pre_print_r($result); die();
 		
 		return $result;
 	}

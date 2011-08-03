@@ -42,7 +42,7 @@ class Project extends CI_Controller {
 		$data['p']					= $project_data;
 		$data['t'] 					= $tag_data; 
 		buildLayout($data);
-		pre_print_r($data);
+//		pre_print_r($data);
 	}
 	
 	function addProject()

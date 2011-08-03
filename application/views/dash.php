@@ -1,3 +1,4 @@
+<? pre_print_r($company)?>
 <h2><?=$company['name']?></h2>
 <p>started on <?=date('F jS, Y',strtotime($company['created']))?></p>
 

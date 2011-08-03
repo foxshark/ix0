@@ -41,8 +41,9 @@ class Home extends CI_Controller {
 	{
 		$this->load->model('project_model','_project');
 		$this->load->model('staff_model','_staff');
+
 		
-		$company = $this->_company->getCompany();
+		$company = $this->_company->getCompany($this->session->userdata('company_id'));
 		
 		$data['valuation_snapshot']	= $this->_value->getCompanyTotal();
 		$data['staff_data'] = $this->_staff->getStaffDetails($company['id']);
@@ -64,7 +65,7 @@ class Home extends CI_Controller {
 		$this->session->unset_userdata('username');
 		if($this->session->userdata("username"))
 		{
-			redirect('products');	
+			redirect();	
 		}
 		else
 		{

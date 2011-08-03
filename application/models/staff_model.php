@@ -194,7 +194,9 @@ class Staff_model extends CI_Model {
 		$this->db->join('staff', 'staff.id = staff_tag.staff_id', 'left');
 		$this->db->where('staff.company', $co_id); 
 		$query = $this->db->get($this->_staff_tag);
-
+		
+		//echo $this->db->last_query();
+		
 		$tag	= array();
 		$staff	= array();
 		foreach ($query->result() as $row)
@@ -203,7 +205,7 @@ class Staff_model extends CI_Model {
 			$tag[$row->tag_id]['output']			+= $this->config->item("s_tag_".$row->tag_lvl);
 			$tag[$row->tag_id]['staff'][$row->staff_id]	= $row->tag_lvl;
 		}
-		
+
 		return $tag;
 
 	}
