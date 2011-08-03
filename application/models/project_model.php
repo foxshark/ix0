@@ -25,7 +25,6 @@ class Project_model extends Model {
 		if(!empty($query))
 		{
 			$output = $this->_staff->getTotalOutput();
-			pre_print_r($output);
 			foreach ($query->result() as $row)
 			{
 				$this->_advanceProjectTag(get_object_vars($row), $output);
@@ -38,11 +37,18 @@ class Project_model extends Model {
 	{
 		$turns_completed		= floor((time() - $tag['turns_timer']) / (60*60));
 		$seconds_completed		= $turns_completed * 60 * 60;
-		
-		
-		
-		$lvls = 1;
-		$data = array('lvl'=>$tag['lvl']+$lvls, 'turns_timer'=>$tag['turns_timer']+$seconds_completed);
+		$per_turn_output		= $tag['tag_id'];
+		$units_completed 		= $per_turn_output * $turns_completed;
+		$tag['turns_to_complete']	-= $units_completed;
+		pre_print_r(array($turns_completed, $units_completed));
+		pre_print_r($output);
+		if($tag['turns_to_complete'] <1)
+		{
+			$tag['lvl']++;
+			$tag['turns_to_complete']	= 0;
+		}
+
+		$data = array('lvl'=>$tag['lvl'], 'turns_to_complete'=>$tag['turns_to_complete'], 'turns_timer'=>$tag['turns_timer']+$seconds_completed);
 		
 		pre_print_r($data);
 		$this->db->where('id', $tag['id']);
