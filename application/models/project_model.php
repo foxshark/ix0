@@ -13,6 +13,7 @@ class Project_model extends CI_Model {
 		
 		$this->load->model('tag_model','_tag');
 		$this->load->model('staff_model','_staff');
+		$this->load->model('crud_model','_crud');
 		$this->config->load('taglvl');
 	}
 	
@@ -36,22 +37,27 @@ class Project_model extends CI_Model {
 		pre_print_r($tag);
 	}
 	
-	function getCompanyProjects($company_id)
+
+	function getCompanyProjects($company_id=false)
 	{
 		/* 			
 			get basic info for all projects assigned to a company id		
 		*/
 		
+		// if no ID passed, assume current user's active company
+		if(!$company_id){ $company_id = $this->session->userdata('company_id'); }
+		
 		$result = array();
 		
-		$this->db->where('company_id', $company_id); 
-		$query = $this->db->get($this->_table_project);
-		foreach ($query->result() as $row)
-		{
-			$result[$row->id] = get_object_vars($row);
+		if($company_id)
+		{		
+			$this->db->where('company_id', $company_id); 
+			$query = $this->db->get($this->_table_project);
+			foreach ($query->result() as $row)
+			{
+				$result[$row->id] = get_object_vars($row);
+			}
 		}
-		
-		//echo $this->db->last_query();pre_print_r($result);die();
 		
 		return $result;
 	}
@@ -98,19 +104,19 @@ class Project_model extends CI_Model {
 		return $result;
 	}
 	
-	function getAvailableTags($company_id, $project_id)
+	function getAvailableTags($company_id, $project_id=false)
 	{
 		$result = $this->_staff->getStaffTagsOnly($company_id);
-		$project = $this->getProjectDetails($project_id);
-		
-//		pre_print_r($project);die();
-		
-		// remove tags that are already in progress
-		foreach($project['tags'] as $k => $v)
-		{
-			if(array_key_exists($v['tag_id'],$result) && $v['turns_to_complete'] > 0)
+		if(!$project_id)
+		{ 		
+			$project = $this->getProjectDetails($project_id);
+			// remove tags that are already in progress
+			foreach($project['tags'] as $k => $v)
 			{
-				unset($result[$v['tag_id']]);
+				if(array_key_exists($v['tag_id'],$result) && $v['turns_to_complete'] > 0)
+				{
+					unset($result[$v['tag_id']]);
+				}
 			}
 		}
 //		pre_print_r($result); die;
@@ -133,9 +139,23 @@ class Project_model extends CI_Model {
 		//return $data;
 	}
 	
+	function addProject($options = array())
+	{
+		// required values
+		if(!$this->_crud->_required(array('name'), $options)) return false;
 	
-	
-	
+		// default values
+		$default = array(
+			'company_id' => $this->session->userdata('company_id'),
+			'updated' => date("Y-m-d H:i:s"),
+			'created' => date("Y-m-d H:i:s")
+		);
+		$data = $this->_crud->_default($default, $options);
+		
+		//pre_print_r($options);
+		$id = $this->_crud->insert('project',$data);
+		return $id;
+	}
 	
 	/* replaced by getProjectDetails
 	function getProjectBasic($id)

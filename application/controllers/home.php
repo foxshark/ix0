@@ -4,27 +4,37 @@ class Home extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
-		//$this->load->library('form_validation');
+		
 		$this->load->model('user_model','_users');
 		$this->load->model('valuation_model','_value');
 		$this->load->model('company_model','_company');
 		
+		// make everything in this controller require login
+		if (!$this->tank_auth->is_logged_in()) { redirect('auth/login'); }
+				
 	}
 	
 	function index()
-	{
-		//if($this->session->userdata('logged_in')) {
-		if ($this->tank_auth->is_logged_in()) {
-			$company_id = $this->_company->getActiveCompanyID($this->tank_auth->get_user_id());
-			if(!$company_id) {
-				// redirect them to create a company screen
-			}
-			$this->session->set_userdata('company_id',$company_id);
-			$this->my_dash();
-		} else {
-			//$this->login();
-			redirect('auth/login');
+	{		
+		// should only need to run getActiveCompany on login (we're assuming this is the first page after login)
+		$company_id = $this->_company->getActiveCompanyID();
+		if(!$company_id) {
+			// redirect them to start a company screen
+			redirect('company/start');
 		}
+		// set the active company id in session for use throughout the site
+		$this->session->set_userdata('company_id',$company_id);
+		
+		$this->my_dash();
+	}
+	
+	function rules()
+	{
+		// assemble our view data
+		$data['page_title'] = "Game Rules";
+		$data['content']['main'] = "rules";
+		$data['page_title_short'] = "rules";
+		buildLayout($data);
 	}
 	
 	function my_dash()
@@ -32,32 +42,24 @@ class Home extends CI_Controller {
 		$this->load->model('project_model','_project');
 		$this->load->model('staff_model','_staff');
 		
-		$company_id = $this->_company->getActiveCompanyID($this->tank_auth->get_user_id());
-		$company = $this->_company->getCompany($company_id);
+		$company = $this->_company->getCompany();
 		
-		$data['valuation_snapshot']			= $this->_value->getCompanyTotal();
+		$data['valuation_snapshot']	= $this->_value->getCompanyTotal();
+		$data['staff_data'] = $this->_staff->getStaffDetails($company['id']);
+		$data['projects'] = $this->_project->getCompanyProjects($company['id']);
+		$data['company'] = $company;
 
 		$data['page_title'] = "Dashboard";
 		$data['page_title_short'] = "dash";
 		$data['content']['main'] = 'dash';
-		
-		//$data['staff_data']		= $this->_staff->getUserOverview($this->session->userdata('id'));
-		$data['staff_data'] 		= $this->_staff->getStaffDetails($company['id']);
-		//$data['project_data']		= $this->_project->getProjectOverview($this->session->userdata('id'));		
-		//$data['skill_data']		= $this->_staff->getStaffTagsOnly($this->session->userdata('id'),1);
-		// replace the above function with getAllProjects, which will contain skill_data for each project
-		$data['projects'] = $this->_project->getCompanyProjects($company['id']);
-		$data['company'] = $company;
-
-		//$data['user_details'] = $this->_users->getMyStats();
-		//buildLayout($data, "mobile");
 		buildLayout($data);
 	}
 	
+	/* all oudated by Tank Auth
 	function login()
 	{
 		
-		/* all oudated by Tank Auth
+		
 		$this->load->library('form_validation');
 		$this->session->unset_userdata('username');
 		if($this->session->userdata("username"))
@@ -92,7 +94,7 @@ class Home extends CI_Controller {
 			//$data['content']['main'] = 'hire';
 			
 			buildLayout($data);
-		}*/
+		}
 	}
 	
 	function logout()
@@ -111,13 +113,5 @@ class Home extends CI_Controller {
 		$data['page_title'] = "Register";
 		$data['content']['main'] = array('register');
 		buildLayout($data);
-	}
-	
-	function rules()
-	{
-		// assemble our view data
-		$data['page_title'] = "Game Rules";
-		$data['content']['main'] = array('rules');
-		buildLayout($data);
-	}
+	}*/
 }

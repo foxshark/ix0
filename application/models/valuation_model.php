@@ -15,13 +15,11 @@ class Valuation_model extends CI_Model {
 	
 	function getCompanyTotal($id = 0)
 	{
-
-		if($id == 0) $id = $this->tank_auth->get_user_id();
+		if($id == 0) $id = $this->session->userdata('company_id');
 		$this->db->where('company_id', $id); 
 		$this->db->limit(1);
 		$this->db->order_by("created", "desc");
 		$query	= $this->db->get($this->_cevent);
-		
 		$row	= get_object_vars(array_pop($query->result()));
 		
 		return $row;
@@ -47,5 +45,16 @@ class Valuation_model extends CI_Model {
 	function staff_valuation($tag_id, $tag_lvl)
 	{
 		return rand(10, 100);
+	}
+	
+	function currentTagValuation($tags)
+	{
+		$total = 0;
+		foreach($tags as $tag)
+		{
+			$total += rand(10,100)/100;
+		}
+		return $total;
+		
 	}
 }

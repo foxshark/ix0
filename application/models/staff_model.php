@@ -2,11 +2,12 @@
 
 class Staff_model extends CI_Model {
 
-	// create a sample object out patient info
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->model('valuation_model','_value');		
+		$this->load->model('crud_model','_crud');
+		
 		// Tables being used:
 		$this->_staff		= 'staff';
 		$this->_staff_tag	= 'staff_tag';
@@ -82,6 +83,29 @@ class Staff_model extends CI_Model {
 		} 
 	}
 	
+	function _getStaffbyID($options = array())
+	{
+		// require staff id in the options
+		if(!$this->_crud->_required(array('id'), $options)) return false;
+		
+		// don't get tags, unless requested in the options
+		$options = $this->_crud->_default(array('tags' => FALSE), $options);
+		
+		$data = $this->_crud->get('staff',$where=array('id'=>$options['id']),true);
+		
+		if($options['tags']){
+			$this->db->select('staff_tag.*, tags.name');
+			$this->db->join('tags', 'tags.id = staff_tag.tag_id', 'left');
+			$this->db->where('staff_id', $options['id']);
+			$query = $this->db->get($this->_staff_tag);	
+			foreach($query->result() as $row){
+				$data['tags'][$row->tag_id] = get_object_vars($row);
+			}
+		}
+		
+		return $data;
+	}
+	
 	function _getCompanyStaff($company_id=0)
 	{
 		$this->db->where('company', $company_id); 
@@ -136,13 +160,30 @@ class Staff_model extends CI_Model {
 		return $names[rand(1, count($names))]; 
 	}
 	
-	function hireStaff($id)
+	function hireStaff($options = array())
 	{
-		$data = array(	"company"	=>$this->session->userdata('company_id'),
+		// required values
+		if(!$this->_crud->_required(array('id'), $options)) return false;
+	
+		// default values
+		$default = array(
+			'company' => $this->session->userdata('company_id'),
+			'hire_date' => date("Y-m-d H:i:s")
+		);
+		$data = $this->_crud->_default($default, $options);
+		
+		// hard code in that it must be an un employed person
+		$where = array('id' => $data['id'], 'company' => 0);
+		
+		$id = $this->_crud->update($this->_staff,$where,$data);
+		
+		return $id;
+		
+		/*$data = array(	"company"	=>$this->session->userdata('company_id'),
 						"hire_date"	=>date("Y-m-d H:i:s"));
 		$this->db->where('id', $id);
 		$this->db->where('company', 0); // hard code in that it must be an un employed person
-		$this->db->update($this->_staff, $data); 
+		$this->db->update($this->_staff, $data); */
 	}
 	
 	function getTotalOutput()
@@ -166,4 +207,5 @@ class Staff_model extends CI_Model {
 		return $tag;
 
 	}
+
 }
