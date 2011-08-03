@@ -1,9 +1,9 @@
 <?php
-class Home extends Controller {
+class Home extends CI_Controller {
 
-	function Home()
+	function __construct()
 	{
-		parent::Controller();
+		parent::__construct();
 		//$this->load->library('form_validation');
 		$this->load->model('user_model','_users');
 		$this->load->model('valuation_model','_value');
@@ -13,10 +13,17 @@ class Home extends Controller {
 	
 	function index()
 	{
-		if($this->session->userdata('logged_in')) {
+		//if($this->session->userdata('logged_in')) {
+		if ($this->tank_auth->is_logged_in()) {
+			$company_id = $this->_company->getActiveCompanyID($this->tank_auth->get_user_id());
+			if(!$company_id) {
+				// redirect them to create a company screen
+			}
+			$this->session->set_userdata('company_id',$company_id);
 			$this->my_dash();
 		} else {
-			$this->login();
+			//$this->login();
+			redirect('auth/login');
 		}
 	}
 	
@@ -24,9 +31,10 @@ class Home extends Controller {
 	{
 		$this->load->model('project_model','_project');
 		$this->load->model('staff_model','_staff');
-
-		$company = $this->_company->getCompany($this->session->userdata('company_id'));
-	
+		
+		$company_id = $this->_company->getActiveCompanyID($this->tank_auth->get_user_id());
+		$company = $this->_company->getCompany($company_id);
+		
 		$data['valuation_snapshot']			= $this->_value->getCompanyTotal();
 
 		$data['page_title'] = "Dashboard";
@@ -48,6 +56,8 @@ class Home extends Controller {
 	
 	function login()
 	{
+		
+		/* all oudated by Tank Auth
 		$this->load->library('form_validation');
 		$this->session->unset_userdata('username');
 		if($this->session->userdata("username"))
@@ -61,8 +71,10 @@ class Home extends Controller {
 			
 			if ($this->form_validation->run() == true)
 			{
-				if($this->simplelogin->login($this->input->post('username'),$this->input->post('password')))
-				{
+				if($this->input->post('username') == "kyle@sitegoals.com"){ $this->session->set_userdata('id',2); }
+				$this->session->set_userdata('logged_in','yes');
+				//if($this->simplelogin->login($this->input->post('username'),$this->input->post('password')))
+				//{
 					$company_id = $this->_company->getActiveCompanyID($this->session->userdata('id'));
 					if(!$company_id)
 					{
@@ -70,7 +82,7 @@ class Home extends Controller {
 					}
 					$this->session->set_userdata('company_id',$company_id);
 					redirect(base_url());
-				}
+				//}
 			}
 	
 			$data['page_title'] = "Login";
@@ -80,7 +92,7 @@ class Home extends Controller {
 			//$data['content']['main'] = 'hire';
 			
 			buildLayout($data);
-		}
+		}*/
 	}
 	
 	function logout()

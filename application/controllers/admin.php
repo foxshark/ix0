@@ -1,10 +1,10 @@
 <?php
 
-class Admin extends Controller {
+class Admin extends CI_Controller {
 
-	function Admin()
+	function __construct()
 	{
-		parent::Controller();
+		parent::__construct();
 		//$this->load->library('form_validation');
 		$this->load->model('admin_model','_admin');
 		$this->load->model('tag_model','_tags');

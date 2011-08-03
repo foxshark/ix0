@@ -1,6 +1,6 @@
 <?php
 
-class Project_model extends Model {
+class Project_model extends CI_Model {
 
 	function __construct()
 	{
@@ -71,7 +71,6 @@ class Project_model extends Model {
 			$result = get_object_vars($row);
 		}
 		
-		//pre_print_r($project); die();		
 		$result['tags'] = array();
 		
 		// get the tags assigned to this project as well as info about each tag

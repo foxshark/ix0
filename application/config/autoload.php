@@ -39,7 +39,7 @@
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database', 'session', 'simplelogin');
+$autoload['libraries'] = array('database', 'session', 'tank_auth');
 
 
 /*
@@ -52,18 +52,6 @@ $autoload['libraries'] = array('database', 'session', 'simplelogin');
 */
 
 $autoload['helper'] = array('url','basic','asset','layout');
-
-
-/*
-| -------------------------------------------------------------------
-|  Auto-load Plugins
-| -------------------------------------------------------------------
-| Prototype:
-|
-|	$autoload['plugin'] = array('captcha', 'js_calendar');
-*/
-
-$autoload['plugin'] = array();
 
 
 /*
