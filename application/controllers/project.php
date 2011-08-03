@@ -37,7 +37,7 @@ class Project extends Controller {
 		$data['p']					= $project_data;
 		$data['t'] 					= $tag_data; 
 		buildLayout($data);
-		pre_print_r($data);
+//		pre_print_r($data);
 	}
 	
 	function editProject($project_id)
