@@ -25,10 +25,24 @@ class Crud_model extends CI_Model {
 		return array_merge($defaults, $options);
 	}
 	
+	function get($table,$where=array(),$single=FALSE) {
+		$q = $this->db->get_where($table,$where);
+		$result = $q->result_array();
+		if($single) {
+			return $result[0];
+		}
+		return $result;
+	}
+	
 	function insert($table,$data) 
 	{
 		$this->db->insert($table,$data);
 		return $this->db->insert_id();
+	}
+	
+	function update($table,$where=array(),$data) {
+		$this->db->update($table,$data,$where);
+		return $this->db->affected_rows();
 	}
 	
 	/* example usage:

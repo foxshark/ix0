@@ -1,4 +1,5 @@
 <h2><?=$company['name']?></h2>
+<p>started on <?=date('F jS, Y',strtotime($company['created']))?></p>
 
 <section>
 	<p>[graph]</p>

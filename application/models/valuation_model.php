@@ -46,4 +46,15 @@ class Valuation_model extends CI_Model {
 	{
 		return rand(10, 100);
 	}
+	
+	function currentTagValuation($tags)
+	{
+		$total = 0;
+		foreach($tags as $tag)
+		{
+			$total += rand(10,100)/100;
+		}
+		return $total;
+		
+	}
 }
