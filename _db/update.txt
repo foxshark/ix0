@@ -55,3 +55,7 @@ UPDATE `ip0_r4zf3st`.`company` SET `active` = '1' WHERE `company`.`id` =1;
 UPDATE `ip0_r4zf3st`.`company` SET `active` = '1' WHERE `company`.`id` =2;
 
 ALTER TABLE `company` ADD `user_equity` INT NOT NULL DEFAULT '100' AFTER `user_id` 
+
+8/3/11 - kyle
+-------
+ALTER TABLE `tag_event` CHANGE `valuation_change` `valuation` INT( 11 ) NOT NULL ;

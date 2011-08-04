@@ -1,0 +1,21 @@
+game engine
+	- pic project tag to lvl
+	- users auto lvl
+valuation
+	- you see other companies, not tags
+		- the companies you see are invested in your tags
+		- you don't see direct staff : tag valuation either
+	- equity
+flavor
+	- company name
+	x project description
+BTC
+	- API?
+	- direct wallet?
+
+----
+
+Nice to Have
+	UI
+	- logo maker
+	- haveamint.com

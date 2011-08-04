@@ -95,13 +95,14 @@ class Project_model extends Model {
 		
 		// get the tags assigned to this project as well as info about each tag
 //		$this->db->select('lvl,turns_to_complete,completed,tag_id,name,valuation,tag_category,updated,created');
-		$this->db->select();
+		$this->db->select('*,'. $this->_table_project_tag.'.id as project_tag_id');
 		$this->db->join($this->_table_tags, $this->_table_project_tag.'.tag_id = '.$this->_table_tags.'.id');
 		$this->db->where('project_id',$project_id);
 		$this->db->order_by('turns_to_complete');
 		$query = $this->db->get($this->_table_project_tag);
 		foreach($query->result() as $row)
 		{
+			//pre_print_r($this->db->last_query());
 			$row->next_turn	= (60*60) - (time() - $row->turns_timer);
 			$row->goal	= $this->config->item('tag_'.($row->lvl+1));
 			$row->progress	= $this->config->item('tag_'.($row->lvl+1)) - $row->turns_to_complete;
@@ -112,10 +113,8 @@ class Project_model extends Model {
 			$row->progress	= 0;			
 			}
 			
-			$result['tags'][] = get_object_vars($row);
+			$result['tags'][$row->tag_id] = get_object_vars($row);
 		}
-		
-//		pre_print_r($result); die();
 		
 		return $result;
 	}
@@ -141,22 +140,35 @@ class Project_model extends Model {
 	
 	function addProjectTag($company_id, $project_id, $tag_id)
 	{
-		$data = array(
-			"company_id"		=> $company_id,
-			"project_id"		=> $project_id,
-			"tag_id"		=> $tag_id,
-			"lvl"			=> 0,
-			"turns_to_complete"	=> $this->config->item('tag_1'),
-			"turns_timer"		=> time(),
-			"completed"		=> date("Y-m-d H:i:s")
-			);
+		$p = $this->getProjectDetails($project_id);
 		
-		$this->db->insert($this->_table_project_tag, $data);
+		
+		if(isset($p['tags'][$tag_id]))
+		{
+			$t = $p['tags'][$tag_id];
+			$data = array(
+				"turns_to_complete"	=> $this->config->item('tag_'.($t['lvl']+1)),
+				"turns_timer"		=> time(),
+				"completed"		=> date("Y-m-d H:i:s")
+			);
+			//pre_print_r($t); die;
+			$this->db->where("id", $t['project_tag_id']);
+			$this->db->update($this->_table_project_tag, $data);
+		} else {
+			$data = array(
+				"company_id"		=> $company_id,
+				"project_id"		=> $project_id,
+				"tag_id"		=> $tag_id,
+				"lvl"			=> 0,
+				"turns_to_complete"	=> $this->config->item('tag_1'),
+				"turns_timer"		=> time(),
+				"completed"		=> date("Y-m-d H:i:s")
+				);
+			
+			$this->db->insert($this->_table_project_tag, $data);
+		}
 		//return $data;
 	}
-	
-	
-	
 	
 	
 	/* replaced by getProjectDetails
