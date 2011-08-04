@@ -46,10 +46,17 @@ class Project_model extends Model {
 			$tag['lvl']++;
 			$tag['turns_to_complete']	= 0;
 		}
+		
+		if($turns_completed > 1)
+		{
+			$this->_staff->advanceStaffTag($tag['tag_id'], $output[$tag['tag_id']], $turns_completed);
+		}
 
 		$data = array('lvl'=>$tag['lvl'], 'turns_to_complete'=>$tag['turns_to_complete'], 'turns_timer'=>$tag['turns_timer']+$seconds_completed);
 		
-		//pre_print_r($data);
+		//pre_print_r($turns_completed);
+		//pre_print_r($output);
+		//pre_print_r($data); die;
 		$this->db->where('id', $tag['id']);
 		$this->db->update($this->_table_project_tag, $data);
 		//pre_print_r($tag);
