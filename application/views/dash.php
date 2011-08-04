@@ -15,7 +15,6 @@
 <div class="clearfix">
 
 	<section class="staff">
-		<div data-role="collapsible">
 		<h3><a href="<?= base_url()?>staff/overview">My Staff</a> (<?=count($staff_data)?>)</h3>
 		<ul class="dash-list" data-role="listview" data-inset="true">
 			<? foreach($staff_data as $s) : ?>
@@ -31,14 +30,11 @@
 		</ul>
 		
 		<p><a href="<?= base_url()?>staff/hire" data-role="button">Hire Staff</a></p>
-		</div>
 		
 	</section>
 	
 	<section class="projects">
 	
-		<div data-role="collapsible">
-		
 		<h3>My Projects (<?=count($projects)?>)</h3>
 		
 		<ul data-role="listview" data-inset="true">
@@ -48,8 +44,6 @@
 		</ul>
 
 		<p><a href="<?= base_url()?>project/start">Start New Project</a></p>
-		
-		</div>
 		
 	</section>
 

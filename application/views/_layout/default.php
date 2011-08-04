@@ -18,6 +18,7 @@
 	<link rel="shortcut icon" href="/favicon.ico">
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 	<?=css_asset('style.css?v=1');?>
+	<?=css_asset('style-dark.css?v=1');?>
     <?=js_asset('modernizr-1.7.min.js');?>
 
 </head>
