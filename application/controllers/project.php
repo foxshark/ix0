@@ -8,12 +8,8 @@ class Project extends CI_Controller {
 		$this->load->model('project_model','_project');
 		$this->load->model('company_model','_company');
 		$this->load->model('staff_model','_staff');
-<<<<<<< HEAD
-		$this->_project->checkForMyOutstandingProjects();
-=======
-		
+		$this->_project->checkForMyOutstandingProjects();	
 		$this->load->library('form_validation');
->>>>>>> a8c4cbc58d8364bd105b82dc567d4e6122651cb4
 	}
 	
 	function index()
