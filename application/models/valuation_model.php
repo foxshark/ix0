@@ -1,11 +1,11 @@
 <?php
 
-class Valuation_model extends Model {
+class Valuation_model extends CI_Model {
 
 	// create a sample object out patient info
-	function Valuation_model ()
+	function __construct()
 	{
-		parent::Model();
+		parent::__construct();
 		
 		// Tables being used:
 		$this->_staff		= 'staff';
@@ -20,7 +20,6 @@ class Valuation_model extends Model {
 		$this->db->limit(1);
 		$this->db->order_by("created", "desc");
 		$query	= $this->db->get($this->_cevent);
-		
 		$row	= get_object_vars(array_pop($query->result()));
 		
 		return $row;
@@ -46,5 +45,16 @@ class Valuation_model extends Model {
 	function staff_valuation($tag_id, $tag_lvl)
 	{
 		return rand(10, 100);
+	}
+	
+	function currentTagValuation($tags)
+	{
+		$total = 0;
+		foreach($tags as $tag)
+		{
+			$total += rand(10,100)/100;
+		}
+		return $total;
+		
 	}
 }

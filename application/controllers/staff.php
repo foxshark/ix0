@@ -1,15 +1,14 @@
 <?php
-class Staff extends Controller {
+class Staff extends CI_Controller {
 
 	function __construct()
 	{
 		parent::__construct();
 		
-		if(!$this->session->userdata('logged_in')) {
-			redirect('/home');
-		}
+		if (!$this->tank_auth->is_logged_in()) { redirect(); }
 		
 		$this->load->model('staff_model','_staff');
+		$this->load->model('valuation_model','_value');
 		//$this->load->library('form_validation');
 		//$this->load->model('user_model','_users');
 	}
@@ -21,9 +20,9 @@ class Staff extends Controller {
 	
 	function hire()
 	{
-		$this->load->model('valuation_model','_value');		
 		$data['page_title']			= "Hire New Staff Members";
-		$data['content']['main']		= 'staff_add';
+		$data['page_title_short']	= "hire";
+		$data['content']['main']	= 'staff_add';
 		$data['staff_data']			= $this->_staff->getFreeStaff();
 		$valuation_snapshot			= $this->_value->getCompanyTotal();
 		$data['co_worth']			= $valuation_snapshot['valuation'] !=0 ? $valuation_snapshot['valuation'] : .01; //make sure this is never 0
@@ -32,8 +31,36 @@ class Staff extends Controller {
 	
 	function finalizeHire($id = 0)
 	{
-		$this->_staff->hireStaff($id);
-		redirect('staff');	
+		// get staff worth
+		$staff = $this->_staff->_getStaffbyID(array('id'=>$id,'tags'=>TRUE));
+		$staff_worth = $this->_value->currentTagValuation($staff['tags']);
+		//pre_print_r($staff_worth);
+		
+		// get company worth
+		$valuation_snapshot	= $this->_value->getCompanyTotal();
+		$company_worth = $valuation_snapshot['valuation'] !=0 ? $valuation_snapshot['valuation'] : .01; //make sure this is never 0
+		//pre_print_r($company_worth);
+		
+		// calculate demanded equity
+		$staff_equity = round(($staff_worth/($company_worth*1000))*100); // company worth x 1000 to keep demanded equity low
+		//pre_print_r($staff_equity);
+		
+		// get user equity
+		$user_equity = 100;
+		
+		// if user equity(-1%) is greater than demanded equity, run hireStaff
+		if(($user_equity-1) > $staff_equity){
+			if(user_confirm(base_url()."staff/hire/")){
+				$this->_staff->hireStaff(array('id'=>$id,'equity'=>$staff_equity));
+				// also update user equity
+				$this->_crud->update('company',array('id'=>$this->session->userdata('company_id'),'user_id'=>$this->tank_auth->get_user_id()),array('user_equity'=>$user_equity-$staff_equity));
+				redirect();	
+			}			
+		}
+		else
+		{
+			// provide error message: "You don't have enough available equity to hire this employee."
+		}
 	}
 	
 	function overview()

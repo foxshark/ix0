@@ -29,11 +29,11 @@
 	<header>
 	
 		<h2><?=$site_name?></h2>
-		<? if($this->session->userdata('logged_in')){?>
+		<? if($this->tank_auth->is_logged_in()){?>
 		<ul class="user-links">
 			<li><a href="<?=base_url()?>">Dashboard</a></li>
 			<li><a href="<?=base_url()?>home/rules">Rules</a></li>
-			<li><?=$this->session->userdata('username')?> | <a href="<?=base_url()?>logout">Logout</a></li>
+			<li><?=$this->tank_auth->get_username()?> | <a href="<?=base_url()?>auth/logout">Logout</a></li>
 		</ul>
 		<? } ?>
 	

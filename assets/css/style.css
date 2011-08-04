@@ -207,98 +207,14 @@ table { border-collapse: collapse; border-spacing: 0; }
    Author: 
    ========================================================================== */
 
-/* old manifest styles */	
-.user_0 { background: #EEE8CD; }
-.user_1 { background: #FFFF7F; }
-.user_2 { background: #9FC8FF; }
-.user_3 { background: #BACDCD; }
-.user_4 { background: #C8FFED; }
-.user_5 { background: #D8EE9A; }
-.user_6 { background: #D2BFFF; }
 
-.grid {
-	margin: 20px auto;
-	width: 100%;
-	}
-	.grid td {
-		border: 1px solid #CCCCCC;
-		width: 100px;
-		height: 100px;
-		/*padding: 20px;*/
-		}
-		.grid td a {
-			display: block;
-			width: 80px;
-			height: 80px;
-			text-decoration: none;
-			color: #000;
-			padding: 10px;
-			}
-		span.location,
-		span.fort,
-		span.resource {
-			display: block;
-			display: inline-block;
-			padding: 0 0 0 22px;
-			height: 22px;
-			line-height: 22px;
-			margin: 5px 0;
-			}
-		.grid td .location { 
-			font-weight: bold; 
-			padding-left: 0;
-			margin-top: 0;
-			}
-		span.fort { background: url("../images/icons/fort.gif") 0 0 no-repeat; }
-		span.resource { background: url("../images/icons/shovel.gif") 0 0 no-repeat; }
-		.grid td span.fort,
-		.grid td span.resource {
-			display: none;
-			}
-		.grid td a:hover {
-			background: #FFF8DC;
-			}
-			.grid td a:hover span.fort,
-			.grid td a:hover span.resource {
-				display: block;
-				}	
-		
-			
-input {
-	display: block;
-	margin: 0 0 10px;
-	}
-	
-label {
-	display: block;
-	margin: 5px 0;
-	}
-
-
-.logged_in_as {
-	position: absolute;
-	top: 20px;
-	right: 0;
-	}
-.user_color {
-	display: block;
-	float: left;
-	width: 16px;
-	height: 16px;
-	margin: 0 5px 0 0;
-	}
-	
-	
-/* end manifest styles */
-
-
-
-
-
-
+body {
+	padding: 0 20px;
+}
 
 #container {
-	width: 990px;
+	max-width: 990px;
+	min-width: 360px;
 	margin: 0 auto;
 }
 
@@ -357,6 +273,9 @@ label {
 	background: #014464;  
 	background: -moz-linear-gradient(top, #0D658E, #0C577A 50%, #014D71 51%, #003E5C);  
 	background: -webkit-gradient(linear, left top, left bottombottom, color-stop(0, #0E658E), color-stop(.5, #0C577A), color-stop(.5, #014D71), to(#003E5C));   
+	
+	background: -webkit-gradient(linear, left top, left bottom, from(#444444), to(#999999)); /* Saf4+, Chrome */
+  	background-image: -webkit-linear-gradient(top, #444444, #999999); /* Chrome 10+, Saf5.1+ */
 	
 	/* BORDER RADIUS */  
 	-moz-border-radius: 5px;  
