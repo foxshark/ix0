@@ -97,37 +97,62 @@ class Company_model extends CI_Model {
 	
 	function nameGenerator()
 	{
-		$words = array("fire","social","buzz","zine","cool","rules","down","up","flip","tag","dynamics","zoom","face","space","crunch","cast","tech","you","com");
+		$a = array( "Babble", "Buzz", "Blog", "Blue", "Brain", "Bright", "Browse", "Bubble", "Chat", "Chatter", "Cloud", "Dab", "Dazzle", "Dev", "Digi", "Edge", "Feed", "Fire", "Five", "Flash", "Flip", "Gab", "Giga",  "Inno", "Jabber", "Jax", "Jet", "Jump", "Link", "Live", "My", "N", "Photo", "Pix", "Pod", "Real", "Riff", "Shuffle", "Snap", "Skip", "Social", "Tag", "Tek", "Thought", "Top", "Topic", "Web", "Word", "You", "Zoom");
 
-		// get a random word
-		$random_word = $words[mt_rand(0,count($words)-1)];
-		// randomly get a nother random word
-		$random_words = $random_word . $words[mt_rand(0,count($words)-1)];
+		$b = array( "bean", "beat", "bird", "blab", "box", "bridge", "bug", "buzz", "cast", "cat", "chat", "club", "cube", "dog", "drive", "erize", "etize", "feed", "fire", "fish", "fly", "ify", "jam", "lab", "links", "list", "lounge", "mix", "nation", "net", "opia", "pad", "path", "pedia", "point", "pulse", "set", "space", "span", "share", "shots", "sphere", "spot", "squared", "storm",  "ster", "tag", "tags", "tube", "tune", "type", "verse", "vine", "ware", "wire", "works", "zone", "zoom" );
+
+		// these are not complete words:
+		$c = array( "Ai", "Aba", "Agi", "Ava", "Cami", "Centi", "Cogi", "Demi", "Diva", "Dyna", "Ea", "Ei", "Fa", "Ge", "Ja", "I", "Ka", "Kay", "Ki", "Kwi", "La", "Lee", "Mee", "Mi", "Mu", "My", "Oo", "O", "Oyo", "Pixo", "Pla", "Qua", "Qui", "Roo", "Rhy", "Ska", "Sky", "Ski", "Ta", "Tri", "Twi", "Tru", "Vi", "Voo", "Wiki", "Ya", "Yaki", "Yo", "Za", "Zoo" );
+
+		$d = array( "ba", "ble", "boo", "box", "cero", "deo", "del", "do", "doo", "gen", "jo", "lane", "lia", "lith", "loo", "lium", "lr", "mba", "mbee", "mbo", "mbu", "mia", "mm", "nder", "ndo", "ndu", "noodle", "nix", "nte", "nti", "nu", "nyx", "pe", "re", "ta", "tri", "tz", "va", "vee", "veo", "vu", "xo", "yo", "zz", "zzy", "zio", "zu");
 		
+		// grab random entries
+		$r_a = $a[mt_rand(0,count($a)-1)];
+		$r_b = $b[mt_rand(0,count($b)-1)];
+		$r_c = $c[mt_rand(0,count($c)-1)];
+		$r_d = $d[mt_rand(0,count($d)-1)];
+		$r_e = mt_rand(1,99);
+		$r_f = $this->convertNumber(mt_rand(1,19));
 		
-		// get a random number
-		$random_num = mt_rand(1,99);
-		// randomly convert the number to a string
-		$random_num_string = $this->convertNumber($random_num);
+		/* start of flickr-izing, doesn't work yet
+		$end = substr($r_a, -2);
+		if($end == "le"){ $r_a = substr_replace($r_a, "lr", -2); }
+		if($end == "er"){ $r_a = substr_replace($r_a, "r", -2); }
+		*/
+				
+		/*
+		archetypes:
+		37Signals		$r_e.$r_a."s"
+		Babblethree		$r_a.$r_f
+		Babblebean		$r_a.$r_b
+		Aibox			$r_c.$r_d
+		Pixlr			$r_a.$r_d
+		*/
 		
-		switch(mt_rand(0,2)){
+		switch(mt_rand(0,4)){
 			case 0:
-				$name = (mt_rand(0,1)==1 ? $random_num . $random_word : $random_num . $random_words);
+				$n = $r_e.strtolower($r_a)."s";
 				break;
 			case 1:
-				$name = $random_word . $random_num_string;
+				$n = $r_a.$r_f;
 				break;
 			case 2:
-				$name = $random_words;
+				$n = $r_a.$r_b;
+				break;
+			case 3:
+				$n = $r_c.$r_d;
+				break;
+			case 4:
+				$n = $r_a.$r_d;
 				break;
 		}
 		
-		return $name;
+		return $n;
 	}
 	
 	function convertNumber($num)
 	{
-	   list($num, $dec) = explode(".", $num);
+	   //list($num, $dec) = explode(".", $num);
 	
 	   $output = "";
 	
@@ -167,6 +192,7 @@ class Company_model extends CI_Model {
 	      $output = rtrim($output, ", ");
 	   }
 	
+	   $dec = false;
 	   if($dec > 0)
 	   {
 	      $output .= " point";
