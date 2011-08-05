@@ -50,5 +50,7 @@ $route['register']			= "home/register";
 $route['project/start']		= "project/addProject";
 $route['project/(:num)']	= "project/editProject/$1";
 
+$route['company/start']		= "company/addCompany";
+
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */

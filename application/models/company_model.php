@@ -62,10 +62,7 @@ class Company_model extends CI_Model {
 		
 		return $result;
 		
-	}
-	
-	
-	
+	}	
 	
 	function newgetCompany($options = array())
 	{
@@ -76,6 +73,26 @@ class Company_model extends CI_Model {
 			);
 		$options = $this->_default($default, $options);	
 		
+	}
+	
+	function addCompany($options = array())
+	{
+		// required values
+		if(!$this->_crud->_required(array('name'), $options)) return false;
+	
+		// default values
+		$default = array(
+			'user_id' => $this->tank_auth->get_user_id(),
+			'user_equity' => 100,
+			'active' => 1,
+			'updated' => date("Y-m-d H:i:s"),
+			'created' => date("Y-m-d H:i:s")
+		);
+		$data = $this->_crud->_default($default, $options);
+		
+		//pre_print_r($options);
+		$id = $this->_crud->insert('company',$data);
+		return $id;
 	}
 	
 }
