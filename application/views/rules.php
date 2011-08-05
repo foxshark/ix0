@@ -33,24 +33,33 @@ function simCycle($price,$users,$turns)
 			$random_val[] = ( mt_rand(0,1) == 1 ? $avg_val+mt_rand(0,$depth) : $avg_val-mt_rand(0, $avg_val) )+1;
 		}
 		
-		// my values
-		$my_equity = mt_rand(1,100)/100;
-		$my_val = $random_val[mt_rand(0,$users-1)];
-		
 		// market values
-		//pre_print_r($random_val);
 		$market_val = array_sum($random_val);
 		
-		// ipo value
-		$return = ($pool*($my_val/$market_val))*$my_equity;
+		// my values
+		$my_equity = mt_rand(1,99)/100;
+		$my_val = $random_val[mt_rand(0,$users-1)];
+		$my_share = round(($my_val/$market_val)*100);
 		
-		$pool_return = $price-$return;	
+		$sys_equity = 1-$my_equity;
+		
+		$return = ($pool*($my_val/$market_val));		
+		$my_return = $return*$my_equity;
+		$sys_return = $return*$sys_equity;
+		
+		// cut would be how much we could skim per transaction
+		$cut = $sys_return*.50;
+		
+		// this would get returned to the pool
+		$pool_return = $sys_return - $cut;
 		
 		$data[] = array(
 			"market" => $market_val,
 			"val" => $my_val,
+			"share" => $my_share,
 			"equity" => $my_equity,
-			"return" => $return,
+			"return" => $my_return,
+			"cut" => $cut,
 			"pool" => $pool_return
 			);
 		
@@ -60,35 +69,40 @@ function simCycle($price,$users,$turns)
 		
 }
 
-$data = simCycle($btc_buyin,$total_companies,100);
-//pre_print_r($data);
+// runs 10 simulations
+$data = simCycle($btc_buyin,$total_companies,10);
+
 ?>
 
 <h3>Simulations (<?=count($data)?>)</h3>
+<p>This simulates any number of companies "cashing out" with a random market depth, valuation, and equity. This should give us a good idea of how likely a player is to make a return on their investment and how much we are likely to make from the system. This does not include the theory that a higher valuation will require a lower equity.</p>
 
 <p>Starting values: <?=$pool?>BTC pool, <?=$total_companies?> companies</p>
-
 
 <table style="width: 100%;">
 	<thead><tr>
     	<th>market</th>
-        <th>val</th>
+        <th>val (share)</th>
         <th>equity</th>
         <th>return</th>
+		<th>cut</th>
         <th>pool</th>
     </tr></thead>
     <tbody>
     <? 
 	$profit = 0;
+	$winners = 0;
 	foreach($data as $d){
-		$profit += $d['pool'];	
+		$profit += $d['cut'];	
+		$winners += ($d['return'] >= $btc_buyin) ? 1 : 0;
 		//echo $profit."<br>";
 		?>
     <tr>
     	<td><?=$d['market']?></td>
-        <td><?=$d['val']?></td>
-        <td><?=$d['equity']?></td>
+        <td><?=$d['val']?> (<?=$d['share']?>%)</td>
+        <td><?=round($d['equity']*100)?>%</td>
         <td><?=$d['return']?></td>
+		<td><?=$d['cut']?></td>
         <td><?=$d['pool']?></td>
     </tr>
     <? } ?>
@@ -96,13 +110,16 @@ $data = simCycle($btc_buyin,$total_companies,100);
 </table>
 
 <p>Net profit = <?=$profit?></p>
+<p>Winners: <?=$winners?></p>
+
+
 
 <h4 class="alert">Suggested Changes</h4>
 <ul>
 	<li>company 1.1.1: change equity sell limit to 99.99 (should make .01% be the lowest share limit for users, staff, etc.)</li>
     <li>employees 2.2.1: add demanded equity min = 00.01% and max = 49.99%</li>
 	<li>add valuation 5.2: base company valuation = project valuation (weighted 70%) + staff valuation (weighted 30%);</li>
-    <li>add valuation 5.3: "cashing out" takes your valuation # as a % of all active companies, converts that to a % of the "cash" pool, then gives your cut based on remaining equity ((cash_pool / (total_market_valuation/company_valuation)) / remaining_equity)</li>
+    <li>add valuation 5.3: "cashing out" takes your valuation # as a % of the total market valuation, converts that to a % of the pool ($/BTC), then dispenses your cut based on remaining equity ($pool*($my_val/$market_val))*$my_equity</li>
 </ul>
 
 
