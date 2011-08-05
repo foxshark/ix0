@@ -5,7 +5,7 @@
 		<li class="clearfix">
 			<span class="name"><?= $s['name']?></span> 
 			<? foreach ($s['tag'] as $t) : ?>
-				<a href="#" class="tag"><?= $t['name'] ?> (<?=$t['tag_points']?> / 10) <span class="level"><?= $t['tag_lvl']?></span></a> 
+				<a href="#" class="tag"><?= $t['name'] ?> (<?=$t['tag_points']?> / <?= $this->config->item('su_tag_'.($t['tag_lvl']+1))?> ) <span class="level"><?= $t['tag_lvl']?></span></a> 
 			
 			<? endforeach; ?>
 		</li>

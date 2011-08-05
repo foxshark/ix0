@@ -32,62 +32,65 @@ $captcha = array(
 );
 ?>
 <?php echo form_open($this->uri->uri_string()); ?>
-<table>
-	<tr>
-		<td><?php echo form_label($login_label, $login['id']); ?></td>
-		<td><?php echo form_input($login); ?></td>
-		<td style="color: red;"><?php echo form_error($login['name']); ?><?php echo isset($errors[$login['name']])?$errors[$login['name']]:''; ?></td>
-	</tr>
-	<tr>
-		<td><?php echo form_label('Password', $password['id']); ?></td>
-		<td><?php echo form_password($password); ?></td>
-		<td style="color: red;"><?php echo form_error($password['name']); ?><?php echo isset($errors[$password['name']])?$errors[$password['name']]:''; ?></td>
-	</tr>
+
+<section>
+	<div class="form-line">
+		<?php echo form_label($login_label, $login['id']); ?>
+		<div class="form-input"><?php echo form_input($login); ?></div>
+		<?php echo form_error($login['name']); ?><?php echo isset($errors[$login['name']])?$errors[$login['name']]:''; ?>
+	</div>
+	<div class="form-line">
+		<?php echo form_label('Password', $password['id']); ?>
+		<div class="form-input"><?php echo form_password($password); ?></div>
+		<?php echo form_error($password['name']); ?><?php echo isset($errors[$password['name']])?$errors[$password['name']]:''; ?>
+	</div>
 
 	<?php if ($show_captcha) {
 		if ($use_recaptcha) { ?>
-	<tr>
-		<td colspan="2">
+	<div class="form-line">
+		<div class="form-input">
 			<div id="recaptcha_image"></div>
-		</td>
-		<td>
+		</div>
+		<div class="form-input">
 			<a href="javascript:Recaptcha.reload()">Get another CAPTCHA</a>
 			<div class="recaptcha_only_if_image"><a href="javascript:Recaptcha.switch_type('audio')">Get an audio CAPTCHA</a></div>
 			<div class="recaptcha_only_if_audio"><a href="javascript:Recaptcha.switch_type('image')">Get an image CAPTCHA</a></div>
-		</td>
-	</tr>
-	<tr>
-		<td>
+		</div>
+	</div>
+	<div class="form-line">
+		<div class="form-input">
 			<div class="recaptcha_only_if_image">Enter the words above</div>
 			<div class="recaptcha_only_if_audio">Enter the numbers you hear</div>
-		</td>
-		<td><input type="text" id="recaptcha_response_field" name="recaptcha_response_field" /></td>
-		<td style="color: red;"><?php echo form_error('recaptcha_response_field'); ?></td>
+		</div>
+		<div class="form-input"><input type="text" id="recaptcha_response_field" name="recaptcha_response_field" /></div>
+		<?php echo form_error('recaptcha_response_field'); ?>
 		<?php echo $recaptcha_html; ?>
-	</tr>
+	</div>
 	<?php } else { ?>
-	<tr>
-		<td colspan="3">
+	<div class="form-line">
+		<div class="form-input">
 			<p>Enter the code exactly as it appears:</p>
 			<?php echo $captcha_html; ?>
-		</td>
-	</tr>
-	<tr>
-		<td><?php echo form_label('Confirmation Code', $captcha['id']); ?></td>
-		<td><?php echo form_input($captcha); ?></td>
-		<td style="color: red;"><?php echo form_error($captcha['name']); ?></td>
-	</tr>
+		</div>
+	</div>
+	<div class="form-line">
+		<?php echo form_label('Confirmation Code', $captcha['id']); ?>
+		<div class="form-input"><?php echo form_input($captcha); ?></div>
+		<?php echo form_error($captcha['name']); ?>
+	</div>
 	<?php }
 	} ?>
 
-	<tr>
-		<td colspan="3">
+	<div class="form-line">
+		<div class="form-input">
 			<?php echo form_checkbox($remember); ?>
 			<?php echo form_label('Remember me', $remember['id']); ?>
 			<?php echo anchor('/auth/forgot_password/', 'Forgot password'); ?>
 			<?php if ($this->config->item('allow_registration', 'tank_auth')) echo anchor('/auth/register/', 'Register'); ?>
-		</td>
-	</tr>
-</table>
-<?php echo form_submit('submit', 'Let me in'); ?>
+		</div>
+	</div>
+</section>
+<section class="form-save">
+	<?php echo form_submit('submit', 'Let me in'); ?>
+</section>
 <?php echo form_close(); ?>

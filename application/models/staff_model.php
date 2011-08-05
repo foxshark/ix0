@@ -204,10 +204,33 @@ class Staff_model extends CI_Model {
 			if(!isset($tag[$row->tag_id]['output'])) $tag[$row->tag_id]['output'] = 0;
 			$tag[$row->tag_id]['output']			+= $this->config->item("s_tag_".$row->tag_lvl);
 			$tag[$row->tag_id]['staff'][$row->staff_id]	= $row->tag_lvl;
+			$tag[$row->tag_id]['points'][$row->staff_id]	= $row->tag_points;
 		}
 
 		return $tag;
 
+	}
+	
+	function advanceStaffTag($tag, $out, $turns)
+	{
+		foreach($out['staff'] as $id=>$lvl)
+		{
+			$data = array("staff_id"=>$id,
+				"tag_id"=>$tag,
+				"tag_points"=>(($lvl*$turns)+$out['points'][$id])
+				);
+			if($this->config->item('su_tag_'.($lvl+1)) < $data["tag_points"])
+			{
+				$data["tag_points"]	= 0;
+				$data["tag_lvl"]	= $lvl+1;
+
+			}
+			$this->db->where("tag_id", $tag);
+			$this->db->where("staff_id", $id);
+			$this->db->update($this->_staff_tag,$data);
+
+		}
+//		pre_print_r(array($tag, $turns, $out)); die;	
 	}
 
 }

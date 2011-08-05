@@ -8,7 +8,7 @@ class Project extends CI_Controller {
 		$this->load->model('project_model','_project');
 		$this->load->model('company_model','_company');
 		$this->load->model('staff_model','_staff');
-		$this->_project->checkForMyOutstandingProjects();
+		$this->_project->checkForMyOutstandingProjects();	
 		$this->load->library('form_validation');
 	}
 	
