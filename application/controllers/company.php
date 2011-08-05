@@ -55,5 +55,11 @@ class Company extends CI_Controller {
 		}
 		
 	}
+	
+	function name()
+	{
+		$name = $this->_company->nameGenerator();
+		echo $name;
+	}
 
 }

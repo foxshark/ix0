@@ -113,7 +113,6 @@ $data = simCycle($btc_buyin,$total_companies,10);
 <p>Winners: <?=$winners?></p>
 
 
-
 <h4 class="alert">Suggested Changes</h4>
 <ul>
 	<li>company 1.1.1: change equity sell limit to 99.99 (should make .01% be the lowest share limit for users, staff, etc.)</li>
