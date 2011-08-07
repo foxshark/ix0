@@ -450,13 +450,13 @@ header .user-links li {
 	width: 100%;
 }
 
-.statlist tr:nth-child(odd){
+.statlist tbody tr:nth-child(odd){
 	background: #333;
 }
-.statlist tr:nth-child(even) {
+.statlist tbody tr:nth-child(even) {
 	background: #222222;
 }
-.statlist tr:hover {
+.statlist tbody tr:hover {
 	background: #666666;
 }
 

@@ -57,4 +57,56 @@ class Valuation_model extends CI_Model {
 		return $total;
 		
 	}
+	
+	
+	
+	
+	/* 
+	 *	new generic functions by jk for calculating, updating, and gettting valuations
+	 *	- the goal here is only run calculations/updates when absolutely necessary, otherwise we can just pull from the db
+	 *  
+	 */
+	 
+	function calculateTagValuation($id)
+	{
+		// this is the root of all other valuations.
+		// use twitter, some other APIs to get our new number
+		
+		// for now, just do a random change from the last valuation
+		// $options = array('table'=>'tag','id'=>$id);
+		// $val = $this->viewLastValuation($options);
+		// $val = (mt_rand(0,1)==1) ? $val += mt_rand(0,100) : $val -= mt_rand(0,100);
+		
+		// just don't let it be less than 1
+		// if($val <= 0) $val = 1;
+	}
+	
+	//function calculateValuation($options = staff, company, project)
+	
+	//function updateValuation(table,id,valuation)
+	
+	// can be used to get the last updated valuation for company, project, staff, or tag
+	function viewValuation($options=array())
+	{
+		// required values
+		if(!$this->_crud->_required(array('table','id'), $options)) return false;
+		
+		// default values
+		$default = array(
+			'limit' => 1
+			);
+		$options = $this->_crud->_default($default, $options);
+		
+		$this->db->select('valuation, created');
+		$this->db->where($options['table'].'_id', $options['id']);
+		$this->db->limit($options['limit']);
+		$this->db->order_by('created desc');		
+		
+		$query = $this->db->get($options['table'].'_event');		
+		$result = $query->result_array();
+		if($options['limit']==1) $result = $result[0];
+		
+		return $result;
+	}	 
+	 
 }

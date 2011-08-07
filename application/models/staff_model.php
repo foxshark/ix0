@@ -172,7 +172,7 @@ class Staff_model extends CI_Model {
 		);
 		$data = $this->_crud->_default($default, $options);
 		
-		// hard code in that it must be an un employed person
+		// hard code in that it must be an unemployed person
 		$where = array('id' => $data['id'], 'company' => 0);
 		
 		$id = $this->_crud->update($this->_staff,$where,$data);

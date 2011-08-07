@@ -62,7 +62,21 @@ class Company_model extends CI_Model {
 		
 		return $result;
 		
-	}	
+	}
+	
+	function getCompanyValuation($id=0,$limit=1,$range=FALSE)
+	{
+		$this->load->model('valuation_model','_value');
+		$options = array(
+			'table'=>'company',
+			'id'=>$id,
+			'limit'=>$limit
+			);
+			
+		$result = $this->_value->viewValuation($options);
+		
+		return $result;
+	}
 	
 	function newgetCompany($options = array())
 	{
