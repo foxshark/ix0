@@ -67,7 +67,7 @@ $autoload['helper'] = array('url','basic','asset','layout');
 |
 */
 
-$autoload['config'] = array('taglvl');
+$autoload['config'] = array('taglvl','rules');
 
 
 /*

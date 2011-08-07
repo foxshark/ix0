@@ -18,8 +18,8 @@ class Admin extends CI_Controller {
 	function tags()
 	{
 		$data['page_title']			= "Admin: Tags";
-		$data['content']['main']		= 'admin/tags';
-		$data['tags']			= $this->_tags->getTags();
+		$data['content']['main']	= array('admin/_nav','admin/tags');
+		$data['tags']				= $this->_tags->getTags();
 		buildLayout($data);
 	}
 	
@@ -39,5 +39,21 @@ class Admin extends CI_Controller {
 			$this->_tags->updateTag($id);
 		}
 		redirect('admin');	
+	}
+	
+	function simulations()
+	{
+		$data['page_title']			= "Admin: Simulations";
+		$data['content']['main']	= array("admin/_nav","admin/simulations");
+		//$data['tags']				= $this->_tags->getTags();
+		buildLayout($data);
+	}
+	
+	function rules()
+	{
+		$data['page_title']			= "Admin: Rules Config";
+		$data['content']['main']	= array("admin/_nav","admin/rules");
+		//$data['tags']				= $this->_tags->getTags();
+		buildLayout($data);
 	}
 }
