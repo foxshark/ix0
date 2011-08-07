@@ -34,6 +34,9 @@
 		<ul class="user-links">
 			<li><a href="<?=base_url()?>">Dashboard</a></li>
 			<li><a href="<?=base_url()?>home/rules">Rules</a></li>
+			<? if(is_admin()){?>
+			<li><a href="<?=base_url()?>admin">Admin</a></li>
+			<? } ?>
 			<li><?=$this->tank_auth->get_username()?> | <a href="<?=base_url()?>auth/logout">Logout</a></li>
 		</ul>
 		<? } ?>

@@ -11,6 +11,7 @@ class Staff_model extends CI_Model {
 		// Tables being used:
 		$this->_staff		= 'staff';
 		$this->_staff_tag	= 'staff_tag';
+		$this->_tag			= 'tag';
 	}
 	
 	function getUserOverview($id=0)
@@ -31,16 +32,16 @@ class Staff_model extends CI_Model {
 		$staff = $this->_getCompanyStaff($company_id);
 		if(!empty($staff)) {
 			// get staff
-			$this->db->select('staff_tag.*, tags.name AS tname, project_tag.lvl AS tlvl');
+			$this->db->select('staff_tag.*, '.$this->_tag.'.name AS tname, project_tag.lvl AS tlvl');
 			$this->db->join('project_tag', 'project_tag.tag_id = staff_tag.tag_id', 'left');
-			$this->db->join('tags', 'tags.id = staff_tag.tag_id', 'left');
+			$this->db->join($this->_tag, $this->_tag.'.id = staff_tag.tag_id', 'left');
 			$this->db->where_in('staff_id', array_keys($staff)); 
 			if($min_lvl > 0)
 			{
 				$this->db->where('project_tag.lvl >=', $min_lvl);
 			}
 			$this->db->order_by('project_tag.lvl', 'desc');
-			$this->db->order_by('tags.name', 'asc');
+			$this->db->order_by($this->_tag.'.name', 'asc');
 			$query = $this->db->get($this->_staff_tag);
 	
 			$tag = array();
@@ -65,8 +66,8 @@ class Staff_model extends CI_Model {
 		$staff = $this->_getCompanyStaff($company_id);
 		// get staff
 		if(!empty($staff)) {
-		$this->db->select('staff_tag.*, tags.name');
-		$this->db->join('tags', 'tags.id = staff_tag.tag_id', 'left');
+		$this->db->select('staff_tag.*, '.$this->_tag.'.name');
+		$this->db->join($this->_tag, $this->_tag.'.id = staff_tag.tag_id', 'left');
 		$this->db->where_in('staff_id', array_keys($staff)); 
 		$query = $this->db->get($this->_staff_tag);
 
@@ -94,8 +95,8 @@ class Staff_model extends CI_Model {
 		$data = $this->_crud->get('staff',$where=array('id'=>$options['id']),true);
 		
 		if($options['tags']){
-			$this->db->select('staff_tag.*, tags.name');
-			$this->db->join('tags', 'tags.id = staff_tag.tag_id', 'left');
+			$this->db->select('staff_tag.*, '.$this->_tag.'.name');
+			$this->db->join($this->_tag, $this->_tag.'.id = staff_tag.tag_id', 'left');
 			$this->db->where('staff_id', $options['id']);
 			$query = $this->db->get($this->_staff_tag);	
 			foreach($query->result() as $row){

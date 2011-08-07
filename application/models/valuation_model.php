@@ -8,6 +8,7 @@ class Valuation_model extends CI_Model {
 		parent::__construct();
 		
 		// Tables being used:
+		$this->_tag			= 'tag';
 		$this->_staff		= 'staff';
 		$this->_staff_tag	= 'staff_tag';
 		$this->_cevent		= 'company_event';
@@ -27,8 +28,8 @@ class Valuation_model extends CI_Model {
 	
 	function getCompanyHistory($days=7)
 	{
-		$this->db->select('staff_tag.*, tags.name');
-		$this->db->join('tags', 'tags.id = staff_tag.tag_id', 'left');
+		$this->db->select('staff_tag.*, '.$this->_tag.'.name');
+		$this->db->join($this->_tag, $this->_tag.'.id = staff_tag.tag_id', 'left');
 		$this->db->where_in('staff_id', array_keys($staff)); 
 		$query = $this->db->get($this->_staff_tag);
 
@@ -73,17 +74,38 @@ class Valuation_model extends CI_Model {
 		// use twitter, some other APIs to get our new number
 		
 		// for now, just do a random change from the last valuation
-		// $options = array('table'=>'tag','id'=>$id);
-		// $val = $this->viewLastValuation($options);
-		// $val = (mt_rand(0,1)==1) ? $val += mt_rand(0,100) : $val -= mt_rand(0,100);
+		$options = array(
+			'table'=>$this->_tag,
+			'id'=>$id,
+			);			
+		$val = $this->viewValuation($options);		
+		$val = (mt_rand(0,1)==1 ? $val['valuation'] += mt_rand(0,100) : $val['valuation'] -= mt_rand(0,100));
+		if($val <= 0) $val = 1; // just don't let it be less than 1
 		
-		// just don't let it be less than 1
-		// if($val <= 0) $val = 1;
+		return $val;
 	}
 	
 	//function calculateValuation($options = staff, company, project)
 	
-	//function updateValuation(table,id,valuation)
+	function updateValuation($options = array())
+	{
+		if(!$this->_crud->_required(array('table','id','valuation'), $options)) return false;
+		
+		$tbl = $options['table'].'_event';
+		$field = $options['table'].'_id';
+		
+		$data = array(
+			$field => $options['id'],
+			'valuation' => $options['valuation'],
+			'created' => date("Y-m-d H:i:s"),
+			'event_type' => 1
+			);
+			
+		//pre_print_r($data);die();
+		
+		$id = $this->_crud->insert($tbl,$data);
+		return $id;
+	}
 	
 	// can be used to get the last updated valuation for company, project, staff, or tag
 	function viewValuation($options=array())

@@ -9,7 +9,7 @@ class Project_model extends CI_Model {
 		// Tables being used:
 		$this->_table_project = 		"project";
 		$this->_table_project_tag =		"project_tag";
-		$this->_table_tags =			"tags";
+		$this->_table_tags =			"tag";
 		
 		$this->load->model('tag_model','_tag');
 		$this->load->model('staff_model','_staff');

@@ -21,7 +21,17 @@ class Tag extends CI_Controller {
 	
 	function stats($id)
 	{
-		$data['tag']				= $this->_tag->getTag($id);
+		$tag = $this->_tag->getTag($id);
+		
+		/* using this to quickly add tags to tag_event
+		$data = array(
+			'id' => $id,
+			'valuation' => $this->_value->calculateTagValuation($id)
+			);		
+		pre_print_r($data);
+		$this->_tag->updateTagValuation($data);*/
+		
+		$data['tag']				= $tag;
 		$data['page_title']			= "Tag Stats";
 		$data['content']['main']	= 'tag_stats';
 		buildLayout($data);
