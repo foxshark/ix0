@@ -22,7 +22,7 @@
                 <div class="ui-btn-text">
 				<span class="name"><?= $s['name']?></span> 
                 <? foreach ($s['tag'] as $t) : ?>
-                    <a href="#" class="tag"><?= $t['name'] ?><span class="level"><?= $t['tag_lvl']?></span></a> 
+                    <a href="<?=base_url()?>tag/<?=$t['tag_id']?>" class="tag"><?= $t['name'] ?><span class="level"><?= $t['tag_lvl']?></span></a> 
                 <? endforeach; ?>
 				</div>
             </li>
