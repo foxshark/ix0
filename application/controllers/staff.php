@@ -20,12 +20,27 @@ class Staff extends CI_Controller {
 	
 	function hire()
 	{
+		
+		$valuation_snapshot	= $this->_value->getCompanyTotal();
+		$co_worth			= $valuation_snapshot['valuation'] !=0 ? $valuation_snapshot['valuation'] : .01; //make sure this is
+		$candidates 		= $this->_staff->getFreeStaff();
+		$max 				= $this->config->item('staff_equity_max');
+		
+		// candidates cannot ask for more equity than $max
+		foreach($candidates as $k => $v)
+		{
+			$equity = ($v['worth']/$co_worth)*100;
+			$candidates[$k]['equity'] = $equity;
+			if($equity >= $max){
+				$candidates[$k]['equity'] = $max;
+			}
+		}
+		//pre_print_r($candidates);die();
+		
+		$data['staff_data']			= $candidates;
 		$data['page_title']			= "Hire New Staff Members";
 		$data['page_title_short']	= "hire";
 		$data['content']['main']	= 'staff_add';
-		$data['staff_data']			= $this->_staff->getFreeStaff();
-		$valuation_snapshot			= $this->_value->getCompanyTotal();
-		$data['co_worth']			= $valuation_snapshot['valuation'] !=0 ? $valuation_snapshot['valuation'] : .01; //make sure this is never 0
 		buildLayout($data);
 	}
 	
