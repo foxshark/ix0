@@ -5,7 +5,7 @@
     <ol>
         <li>Your main resource is "equity". Each company starts with 100% of the equity owned by you. You must sell equity to hire employees, who can be used to build projects, which increases the valuation of your company. Cash out at the right time and your remaining equity will be worth more than you spent to start the company.
         <ol>
-            <li>You cannot sell more than 99.99% of your company's equity.</li>
+            <li>You cannot sell more than <?=$this->config->item('user_equity_max')-$this->config->item('user_equity_min')?>% of your company's equity.</li>
             <li>The more equity you sell, the less "cash" you will receive for your IPO.</li>
         </ol></li>
         <li>You can only run one company at a time. Once you "cash out", you can no longer run that company and must start a new one.</li>
@@ -18,7 +18,7 @@
         <ol>
             <li>The exact percentage is based upon the current valuation of the tags (skills) they have and the level of each.</li>
             <li>The higher your company's current valuation, the less equity new employees can demand. 1% equity of a $200k company is a lot less than 1% equity of a $200 million company.</li>
-			<li>The range of equity a new employee will demand is between .01% (min) and 49.99% (max).</li>
+			<li>The range of equity a new employee will demand is between <?=$this->config->item('staff_equity_min')?>% (min) and <?=$this->config->item('staff_equity_max')?>% (max).</li>
             <li>Once an employee is hired, they're equity percentage is locked in until you cash out.</li>
         </ol></li>	
         <li>You cannot fire employees once they have been hired.</li>

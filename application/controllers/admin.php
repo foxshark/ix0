@@ -43,6 +43,16 @@ class Admin extends CI_Controller {
 	
 	function simulations()
 	{
+		
+		$btc_buyin = $this->config->item('reg_price_btc');
+		$total_companies = 10;
+		$data['pool'] = $total_companies*$btc_buyin;
+		
+		// runs 10 simulations
+		$data['sims'] = $this->_admin->simCycle($btc_buyin,$total_companies,10);
+		$data['btc_buyin'] = $btc_buyin;
+		$data['total_companies'] = $total_companies;
+		
 		$data['page_title']			= "Admin: Simulations";
 		$data['content']['main']	= array("admin/_nav","admin/simulations");
 		//$data['tags']				= $this->_tags->getTags();

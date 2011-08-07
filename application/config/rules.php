@@ -7,3 +7,6 @@ $config['staff_equity_max'] = 49.99;
 $config['staff_equity_min'] = 00.01;
 $config['user_equity_max']	= 100;
 $config['user_equity_min']	= 00.01;
+
+$config['reg_price_btc'] = 1;
+$config['reg_price_cut'] = .50;
