@@ -134,7 +134,7 @@ class Project_model extends CI_Model {
 	function getAvailableTags($company_id, $project_id=false)
 	{
 		$result = $this->_staff->getStaffTagsOnly($company_id);
-		if(!$project_id)
+		if($project_id)
 		{ 		
 			$project = $this->getProjectDetails($project_id);
 			// remove tags that are already in progress
