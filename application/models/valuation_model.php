@@ -141,6 +141,7 @@ class Valuation_model extends CI_Model {
 		$company_val = 0;
 		
 		$this->load->model('project_model','_project_model');
+		$this->load->model('staff_model','_staff_model');
 		$projects = $this->_project_model->getCompanyProjects($id);
 		$project_id = array_keys($projects);
 		
@@ -148,26 +149,13 @@ class Valuation_model extends CI_Model {
 		$this->db->where_in('project_id',$project_id);
 		$this->db->where('lvl >',0);
 		$query = $this->db->get($this->_table_project_tag);
-		$tags = $query->result_array();
-		foreach($tags as $r){
-			$tag_id[] = $r['tag_id'];
-		}
+		$p_tags = $query->result_array();
+		//pre_print_r($tags);
 		
-		//pre_print_r($tag_id);
+		$s_tags = $this->_staff_model->getStaffTagsOnly($id, 1);
+		$c_tags = array_merge($p_tags, $s_tags);
+		$company_val = $this->getTagValuation($c_tags);
 		
-		$options = array(
-			'table'=>$this->_tag,
-			'id'=>$tag_id,
-			'limit'=>false
-			);			
-		$val = $this->viewValuation($options);
-		foreach($val as $v)
-		{
-			// add each tag valuation to staff worth (multiplied by tag level)
-			$company_val += ($v['valuation']*$tags[$v['tag_id']]['lvl']);
-		}
-		
-		//pre_print_r($company_val);
 		return $company_val;
 	}
 	

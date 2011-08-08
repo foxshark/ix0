@@ -48,6 +48,7 @@ class Staff_model extends CI_Model {
 			foreach ($query->result() as $row)
 			{
 				$tag[$row->tag_id] = array(
+					"id"		=>$row->tag_id,
 					"name"		=>$row->tname,
 					"lvl"		=>!empty($row->tlvl) ? $row->tlvl : 0,
 					"goal" 		=> 10,
