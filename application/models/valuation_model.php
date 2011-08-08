@@ -85,8 +85,30 @@ class Valuation_model extends CI_Model {
 		return $val;
 	}
 	
-	//function calculateValuation($options = staff, company, project)
+	function calculateStaffValuation($id)
+	{
+		$this->load->model('staff_model','_staff_model');
+		$staff = $this->_staff_model->_getStaffbyID(array('id'=>$id,'tags'=>TRUE));
+		
+		$options = array(
+			'table'=>$this->_tag,
+			'id'=>array_keys($staff['tags']),
+			'limit'=>false
+			);			
+		$val = $this->viewValuation($options);
+		
+		$worth = 0;
+		foreach($val as $v)
+		{
+			// add each tag valuation to staff worth (multiplied by tag level)
+			$worth += ($v['valuation']*$staff['tags'][$v['tag_id']]['tag_lvl']);
+		}
+		
+		return $worth;
+				
+	}
 	
+	// these two functions only work for _event tables (company and tags). project and staff do not currently track valuation history
 	function updateValuation($options = array())
 	{
 		if(!$this->_crud->_required(array('table','id','valuation'), $options)) return false;
@@ -107,7 +129,7 @@ class Valuation_model extends CI_Model {
 		return $id;
 	}
 	
-	// can be used to get the last updated valuation for company, project, staff, or tag
+	// can be used to get the last updated valuation for company or tag (and anything else that has an _event table)
 	function viewValuation($options=array())
 	{
 		// required values
@@ -118,10 +140,16 @@ class Valuation_model extends CI_Model {
 			'limit' => 1
 			);
 		$options = $this->_crud->_default($default, $options);
+		$tbl_id = $options['table'].'_id';
 		
-		$this->db->select('valuation, created');
-		$this->db->where($options['table'].'_id', $options['id']);
-		$this->db->limit($options['limit']);
+		//$this->db->select('valuation, created');
+		if(is_array($options['id'])){
+			$this->db->where_in($tbl_id, $options['id']);
+			$this->db->group_by($tbl_id);
+		} else {
+			$this->db->where($tbl_id, $options['id']);	
+			$this->db->limit($options['limit']);
+		}		
 		$this->db->order_by('created desc');		
 		
 		$query = $this->db->get($options['table'].'_event');		

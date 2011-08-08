@@ -34,7 +34,7 @@
 			<? foreach($staff_data as $s) : ?>
 			<li class="clearfix">
                 <div class="ui-btn-text">
-				<span class="name"><?= $s['name']?></span> 
+				<a href="<?=base_url()?>staff/employee_detail/<?=$s['id']?>" class="name"><?= $s['name']?></a> 
                 <? foreach ($s['tag'] as $t) : ?>
                     <a href="<?=base_url()?>tag/<?=$t['tag_id']?>" class="tag"><?= $t['name'] ?><span class="level"><?= $t['tag_lvl']?></span></a> 
                 <? endforeach; ?>

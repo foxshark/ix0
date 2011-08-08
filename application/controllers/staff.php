@@ -7,10 +7,12 @@ class Staff extends CI_Controller {
 		
 		if (!$this->tank_auth->is_logged_in()) { redirect(); }
 		
+		// other models
 		$this->load->model('staff_model','_staff');
 		$this->load->model('valuation_model','_value');
-		//$this->load->library('form_validation');
-		//$this->load->model('user_model','_users');
+		
+		// tables
+		$this->_table_staff = "staff";
 	}
 	
 	function index()
@@ -85,6 +87,22 @@ class Staff extends CI_Controller {
 		//$data['staff_data']			= $this->_staff->getUserOverview($this->session->userdata('id'));
 		$data['staff_data']			= $this->_staff->getStaffDetails($this->session->userdata('company_id'));
 		$data['output']				= $this->_staff->getTotalOutput();
+		buildLayout($data);
+	}
+	
+	function employee_detail($id)
+	{
+		$staff = $this->_staff->_getStaffbyID(array('id'=>$id,'tags'=>TRUE,'valuation'=>TRUE));
+		$worth = $this->_value->calculateStaffValuation($id);
+		
+		// running this to update worth --- don't need to run it every time
+		//$this->db->where('id', $staff['id']);
+		//$this->db->update($this->_table_staff, array('worth'=>$worth));		
+		$staff['worth'] = $worth;
+		
+		$data['staff'] = $staff;
+		$data['page_title']			= "Employee Detail";
+		$data['content']['main']	= 'staff_detail';
 		buildLayout($data);
 	}
 
