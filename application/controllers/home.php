@@ -42,6 +42,8 @@ class Home extends CI_Controller {
 		$this->load->model('project_model','_project');
 		$this->load->model('staff_model','_staff');
 
+		$calc_val = $this->_value->calculateCompanyValuation();
+		//pre_print_r($calc_val);
 		
 		$company = $this->_company->getCompany($this->session->userdata('company_id'));
 		

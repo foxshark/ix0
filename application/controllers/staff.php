@@ -93,7 +93,7 @@ class Staff extends CI_Controller {
 	function employee_detail($id)
 	{
 		$staff = $this->_staff->_getStaffbyID(array('id'=>$id,'tags'=>TRUE,'valuation'=>TRUE));
-		$worth = $this->_value->calculateStaffValuation($id);
+		$worth = $this->_value->getTagValuation($staff['tags']);
 		
 		// running this to update worth --- don't need to run it every time
 		//$this->db->where('id', $staff['id']);

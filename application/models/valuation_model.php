@@ -11,6 +11,7 @@ class Valuation_model extends CI_Model {
 		$this->_tag			= 'tag';
 		$this->_staff		= 'staff';
 		$this->_staff_tag	= 'staff_tag';
+		$this->_table_project_tag	= 'project_tag';
 		$this->_cevent		= 'company_event';
 	}
 	
@@ -85,6 +86,31 @@ class Valuation_model extends CI_Model {
 		return $val;
 	}
 	
+	function getTagValuation($tags = array())
+	{
+		/*	give it array of tag_id/lvl, spits out total valuation)
+		 *	- checks tag_event for recently set tag valuation, else it calculates and updates db
+		 */
+		
+		$result = 0;
+		foreach($tags as $k => $v){
+			$id = (isset($v['tag_id']) ? $v['tag_id'] : $v['id']);
+			$my_tags[$id] = (isset($v['tag_lvl']) ? $v['tag_lvl'] : $v['lvl']);
+		}
+		$options = array(
+			'table'=>$this->_tag,
+			'id'=>array_keys($my_tags),
+			'limit'=>false
+			);			
+		$val = $this->viewValuation($options);
+		
+		foreach($val as $v){
+			$result += ($v['valuation']*$my_tags[$v['tag_id']]);
+		}
+		return $result;
+	}
+	
+	// used to calculate demanded equity when hiring and company valuation
 	function calculateStaffValuation($id)
 	{
 		$this->load->model('staff_model','_staff_model');
@@ -106,6 +132,43 @@ class Valuation_model extends CI_Model {
 		
 		return $worth;
 				
+	}
+	
+	function calculateCompanyValuation($id=0)
+	{
+		if($id == 0) $id = $this->session->userdata('company_id');
+		
+		$company_val = 0;
+		
+		$this->load->model('project_model','_project_model');
+		$projects = $this->_project_model->getCompanyProjects($id);
+		$project_id = array_keys($projects);
+		
+		$this->db->select('tag_id,lvl');
+		$this->db->where_in('project_id',$project_id);
+		$this->db->where('lvl >',0);
+		$query = $this->db->get($this->_table_project_tag);
+		$tags = $query->result_array();
+		foreach($tags as $r){
+			$tag_id[] = $r['tag_id'];
+		}
+		
+		//pre_print_r($tag_id);
+		
+		$options = array(
+			'table'=>$this->_tag,
+			'id'=>$tag_id,
+			'limit'=>false
+			);			
+		$val = $this->viewValuation($options);
+		foreach($val as $v)
+		{
+			// add each tag valuation to staff worth (multiplied by tag level)
+			$company_val += ($v['valuation']*$tags[$v['tag_id']]['lvl']);
+		}
+		
+		//pre_print_r($company_val);
+		return $company_val;
 	}
 	
 	// these two functions only work for _event tables (company and tags). project and staff do not currently track valuation history
