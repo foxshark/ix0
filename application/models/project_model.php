@@ -9,7 +9,7 @@ class Project_model extends CI_Model {
 		// Tables being used:
 		$this->_table_project = 		"project";
 		$this->_table_project_tag =		"project_tag";
-		$this->_table_tags =			"tags";
+		$this->_table_tags =			"tag";
 		
 		$this->load->model('tag_model','_tag');
 		$this->load->model('staff_model','_staff');
@@ -134,7 +134,7 @@ class Project_model extends CI_Model {
 	function getAvailableTags($company_id, $project_id=false)
 	{
 		$result = $this->_staff->getStaffTagsOnly($company_id);
-		if(!$project_id)
+		if($project_id)
 		{ 		
 			$project = $this->getProjectDetails($project_id);
 			// remove tags that are already in progress

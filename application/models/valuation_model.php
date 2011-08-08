@@ -8,8 +8,10 @@ class Valuation_model extends CI_Model {
 		parent::__construct();
 		
 		// Tables being used:
+		$this->_tag			= 'tag';
 		$this->_staff		= 'staff';
 		$this->_staff_tag	= 'staff_tag';
+		$this->_table_project_tag	= 'project_tag';
 		$this->_cevent		= 'company_event';
 	}
 	
@@ -27,8 +29,8 @@ class Valuation_model extends CI_Model {
 	
 	function getCompanyHistory($days=7)
 	{
-		$this->db->select('staff_tag.*, tags.name');
-		$this->db->join('tags', 'tags.id = staff_tag.tag_id', 'left');
+		$this->db->select('staff_tag.*, '.$this->_tag.'.name');
+		$this->db->join($this->_tag, $this->_tag.'.id = staff_tag.tag_id', 'left');
 		$this->db->where_in('staff_id', array_keys($staff)); 
 		$query = $this->db->get($this->_staff_tag);
 
@@ -57,4 +59,155 @@ class Valuation_model extends CI_Model {
 		return $total;
 		
 	}
+	
+	
+	
+	
+	/* 
+	 *	new generic functions by jk for calculating, updating, and gettting valuations
+	 *	- the goal here is only run calculations/updates when absolutely necessary, otherwise we can just pull from the db
+	 *  
+	 */
+	 
+	function calculateTagValuation($id)
+	{
+		// this is the root of all other valuations.
+		// use twitter, some other APIs to get our new number
+		
+		// for now, just do a random change from the last valuation
+		$options = array(
+			'table'=>$this->_tag,
+			'id'=>$id,
+			);			
+		$val = $this->viewValuation($options);		
+		$val = (mt_rand(0,1)==1 ? $val['valuation'] += mt_rand(0,100) : $val['valuation'] -= mt_rand(0,100));
+		if($val <= 0) $val = 1; // just don't let it be less than 1
+		
+		return $val;
+	}
+	
+	function getTagValuation($tags = array())
+	{
+		/*	give it array of tag_id/lvl, spits out total valuation)
+		 *	- checks tag_event for recently set tag valuation, else it calculates and updates db
+		 */
+		
+		$result = 0;
+		foreach($tags as $k => $v){
+			$id = (isset($v['tag_id']) ? $v['tag_id'] : $v['id']);
+			$my_tags[$id] = (isset($v['tag_lvl']) ? $v['tag_lvl'] : $v['lvl']);
+		}
+		$options = array(
+			'table'=>$this->_tag,
+			'id'=>array_keys($my_tags),
+			'limit'=>false
+			);			
+		$val = $this->viewValuation($options);
+		
+		foreach($val as $v){
+			$result += ($v['valuation']*$my_tags[$v['tag_id']]);
+		}
+		return $result;
+	}
+	
+	// used to calculate demanded equity when hiring and company valuation
+	function calculateStaffValuation($id)
+	{
+		$this->load->model('staff_model','_staff_model');
+		$staff = $this->_staff_model->_getStaffbyID(array('id'=>$id,'tags'=>TRUE));
+		
+		$options = array(
+			'table'=>$this->_tag,
+			'id'=>array_keys($staff['tags']),
+			'limit'=>false
+			);			
+		$val = $this->viewValuation($options);
+		
+		$worth = 0;
+		foreach($val as $v)
+		{
+			// add each tag valuation to staff worth (multiplied by tag level)
+			$worth += ($v['valuation']*$staff['tags'][$v['tag_id']]['tag_lvl']);
+		}
+		
+		return $worth;
+				
+	}
+	
+	function calculateCompanyValuation($id=0)
+	{
+		if($id == 0) $id = $this->session->userdata('company_id');
+		
+		$company_val = 0;
+		
+		$this->load->model('project_model','_project_model');
+		$this->load->model('staff_model','_staff_model');
+		$projects = $this->_project_model->getCompanyProjects($id);
+		$project_id = array_keys($projects);
+		
+		$this->db->select('tag_id,lvl');
+		$this->db->where_in('project_id',$project_id);
+		$this->db->where('lvl >',0);
+		$query = $this->db->get($this->_table_project_tag);
+		$p_tags = $query->result_array();
+		//pre_print_r($tags);
+		
+		$s_tags = $this->_staff_model->getStaffTagsOnly($id, 1);
+		$c_tags = array_merge($p_tags, $s_tags);
+		$company_val = $this->getTagValuation($c_tags);
+		
+		return $company_val;
+	}
+	
+	// these two functions only work for _event tables (company and tags). project and staff do not currently track valuation history
+	function updateValuation($options = array())
+	{
+		if(!$this->_crud->_required(array('table','id','valuation'), $options)) return false;
+		
+		$tbl = $options['table'].'_event';
+		$field = $options['table'].'_id';
+		
+		$data = array(
+			$field => $options['id'],
+			'valuation' => $options['valuation'],
+			'created' => date("Y-m-d H:i:s"),
+			'event_type' => 1
+			);
+			
+		//pre_print_r($data);die();
+		
+		$id = $this->_crud->insert($tbl,$data);
+		return $id;
+	}
+	
+	// can be used to get the last updated valuation for company or tag (and anything else that has an _event table)
+	function viewValuation($options=array())
+	{
+		// required values
+		if(!$this->_crud->_required(array('table','id'), $options)) return false;
+		
+		// default values
+		$default = array(
+			'limit' => 1
+			);
+		$options = $this->_crud->_default($default, $options);
+		$tbl_id = $options['table'].'_id';
+		
+		//$this->db->select('valuation, created');
+		if(is_array($options['id'])){
+			$this->db->where_in($tbl_id, $options['id']);
+			$this->db->group_by($tbl_id);
+		} else {
+			$this->db->where($tbl_id, $options['id']);	
+			$this->db->limit($options['limit']);
+		}		
+		$this->db->order_by('created desc');		
+		
+		$query = $this->db->get($options['table'].'_event');		
+		$result = $query->result_array();
+		if($options['limit']==1) $result = $result[0];
+		
+		return $result;
+	}	 
+	 
 }

@@ -1,11 +1,25 @@
-<? pre_print_r($company)?>
 <h2><?=$company['name']?></h2>
 <p>started on <?=date('F jS, Y',strtotime($company['created']))?></p>
 
 <section>
-	<p>[graph]</p>
-	<p>current valuation: <?=$valuation_snapshot['valuation']?>, <span <?= $valuation_snapshot['valuation_change'] >=0 ? "" : "red"?>>change: <?= $valuation_snapshot['valuation_change'] >=0 ? "+" : "-"?> <?=$valuation_snapshot['valuation_change']?></span></p>
-	<p>Your equity: <?=$company['user_equity']?>%</p>
+	<h3>Company Valuation</h3>
+	<table class="statlist">
+		<thead><tr>
+			<th>Valuation</th>
+			<th>Date</th>
+		</tr></thead>
+		<tbody>		
+		<? foreach($history as $h) : ?>
+		<tr>
+			<td><?=$h['valuation']?></td>
+			<td><?=$h['created']?></td>
+		</tr>
+		<? endforeach; ?>
+		</tbody>
+	</table>
+	<? /*<p>current valuation: <?=$valuation_snapshot['valuation']?>, <span <?= $valuation_snapshot['valuation_change'] >=0 ? "" : "red"?>>change: <?= $valuation_snapshot['valuation_change'] >=0 ? "+" : "-"?> <?=$valuation_snapshot['valuation_change']?></span></p>
+	<p>Your equity: <?=$company['user_equity']?>%</p>*/?>
+	<p>Most recent valuation: <?=$company['valuation']?> (<?=$company['valuation_change']?>)</p>
 </section>
 
 <!--<section>
@@ -20,9 +34,9 @@
 			<? foreach($staff_data as $s) : ?>
 			<li class="clearfix">
                 <div class="ui-btn-text">
-				<span class="name"><?= $s['name']?></span> 
+				<a href="<?=base_url()?>staff/employee_detail/<?=$s['id']?>" class="name"><?= $s['name']?></a> 
                 <? foreach ($s['tag'] as $t) : ?>
-                    <a href="#" class="tag"><?= $t['name'] ?><span class="level"><?= $t['tag_lvl']?></span></a> 
+                    <a href="<?=base_url()?>tag/<?=$t['tag_id']?>" class="tag"><?= $t['name'] ?><span class="level"><?= $t['tag_lvl']?></span></a> 
                 <? endforeach; ?>
 				</div>
             </li>

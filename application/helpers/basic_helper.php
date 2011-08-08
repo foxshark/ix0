@@ -36,6 +36,17 @@ function is_myproject($project_id)
 	
 }
 
+function is_admin()
+{
+	$CI =& get_instance();
+	$admins = array(1,2);
+	$id = $CI->tank_auth->get_user_id();
+	if(in_array($id,$admins)){
+		return true;
+	}
+	return false;
+}
+
 function user_confirm($return_url)
 {
 	// get flashdata from session

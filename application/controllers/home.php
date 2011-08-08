@@ -42,14 +42,23 @@ class Home extends CI_Controller {
 		$this->load->model('project_model','_project');
 		$this->load->model('staff_model','_staff');
 
+		$calc_val = $this->_value->calculateCompanyValuation();
+		//pre_print_r($calc_val);
 		
 		$company = $this->_company->getCompany($this->session->userdata('company_id'));
 		
-		$data['valuation_snapshot']	= $this->_value->getCompanyTotal();
+		//$data['valuation_snapshot']	= $this->_value->getCompanyTotal();
+		/*	use getCompanyValuation which is more dynamic than getCompanyTotal
+		 */
+		$history = $this->_company->getCompanyValuation($company['id'],10);
+		$change = sprintf('%+d',$history[0]['valuation']-$history[1]['valuation']);
+		$company['valuation'] = $history[0]['valuation'];
+		$company['valuation_change'] = $change;
+		
 		$data['staff_data'] = $this->_staff->getStaffDetails($company['id']);
 		$data['projects'] = $this->_project->getCompanyProjects($company['id']);
 		$data['company'] = $company;
-
+		$data['history'] = $history;
 		$data['page_title'] = "Dashboard";
 		$data['page_title_short'] = "dash";
 		$data['content']['main'] = 'dash';

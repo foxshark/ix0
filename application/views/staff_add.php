@@ -9,7 +9,7 @@
 			<a href="#" class="tag"><?= $t['name']?><span class="level"><?= $t['tag_lvl']?></span></a>         	
         <? } ?>
 		</td>
-		<td><span class="price"><?= ($s['worth']/$co_worth)*100 ?>%</span></td>
+		<td><span class="price"><?= $s['equity'] ?>%</span></td>
 		<td><a href="<?= base_url()?>staff/finalizeHire/<?= $s['id']?>" class="button hire small">Hire</a></td>
 	</tr>
 <? endforeach; ?>

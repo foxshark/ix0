@@ -76,3 +76,7 @@ ALTER TABLE `user_profiles` DROP `active_company_id` ;
 8/3/11 - kyle
 -------
 ALTER TABLE `tag_event` CHANGE `valuation_change` `valuation` INT( 11 ) NOT NULL ;
+
+8/7/11 - Jordan
+---------------
+RENAME TABLE `ip0_r4zf3st`.`tags` TO `ip0_r4zf3st`.`tag` ;

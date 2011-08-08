@@ -7,7 +7,7 @@ class Tag_model extends CI_Model {
 		parent::__construct();
 		
 		// Tables being used:
-		$this->_table_tag =		"tags";		
+		$this->_table_tag =		"tag";		
 	}
 	
 	function getTags($array=array())
@@ -62,5 +62,13 @@ class Tag_model extends CI_Model {
 		} else {
 			$this->db->insert($this->_table_tag, $_POST);
 		}
-	}	
+	}
+	
+	function updateTagValuation($data)	
+	{
+		$this->load->model('valuation_model','_value');
+		
+		$data['table'] = $this->_table_tag;
+		$this->_value->updateValuation($data);
+	}
 }

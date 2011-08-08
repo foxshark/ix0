@@ -52,5 +52,7 @@ $route['project/(:num)']	= "project/editProject/$1";
 
 $route['company/start']		= "company/addCompany";
 
+$route['tag/(:num)']	= "tag/stats/$1";
+
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */
